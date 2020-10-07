@@ -6,10 +6,12 @@ import { DirectMessages } from './DirectMessage';
 const SideBarContainer = styled.div`
   height: 100%;
   background: rebeccapurple;
-  width: 180px;
   padding: 1rem;
   color: white;
+  box-sizing: border-box;
+  overflow-y: auto;
 `;
+
 const Header = styled.header`
   display: grid;
   grid-template-columns: 1fr 25px;
