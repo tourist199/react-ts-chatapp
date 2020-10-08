@@ -55,7 +55,6 @@ export function MessageBox() {
   const { data: dataMsg, loading } = useSubscription(messageSubscription, {
     variables: { channelId: selectedChannel.id },
   });
-  console.log(dataMsg);
 
   useEffect(() => {
     if (dataMsg) {
