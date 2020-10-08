@@ -1,5 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
+import { Item } from './DirectMessage';
+import { StoreContext, Actions } from '../store/store';
 
 const ChannelsTitles = styled.div`
   margin: 2rem 0 1rem;
@@ -11,10 +13,6 @@ const ChannelsTitles = styled.div`
   h2 {
     font-size: 1rem;
   }
-`;
-
-const ChannelItem = styled.li`
-  margin: 0.25rem 0;
 `;
 
 const Button = styled.button`
@@ -31,14 +29,22 @@ const Button = styled.button`
   }
 `;
 
-export default function Channels() {
-  const channels = [
-    'announcements',
-    'general',
-    'frontend',
-    'backend',
-    'random',
-  ];
+export interface Channel {
+  id: string;
+  name: string;
+}
+
+interface ChanelProps {
+  channels: Channel[];
+}
+
+export default function Channels({ channels }: ChanelProps) {
+  const { dispatch } = React.useContext(StoreContext);
+  const [isModalOpen, setModal] = React.useState(false);
+
+  const selectChannel = (channel: { id: string; name: string }) => {
+    dispatch({ type: Actions.SELECTED_CHANNEL, payload: channel });
+  };
 
   return (
     <>
@@ -48,10 +54,17 @@ export default function Channels() {
       </ChannelsTitles>
       <ul>
         {channels.map((channel) => (
-          <ChannelItem key={channel}># {channel}</ChannelItem>
+          <Item
+            onClick={() =>
+              selectChannel({ id: channel.id, name: channel.name })
+            }
+            key={channel.id}
+          >
+            # {channel.name}
+          </Item>
         ))}
       </ul>
-      <Button className='channel-button'>
+      <Button className="channel-button">
         <i className="fas fa-plus" />
         Add channel
       </Button>

@@ -1,6 +1,8 @@
 import * as React from 'react';
 import styled from 'styled-components';
 import { Status } from './SideBar';
+import { Channel } from './Channels';
+import { Actions, StoreContext } from '../store/store';
 
 const MessagesTitles = styled.div`
   margin: 2rem 0 1rem;
@@ -14,18 +16,21 @@ const MessagesTitles = styled.div`
   }
 `;
 
-const MessageItem = styled.li`
+export const Item = styled.li`
   margin: 0.25rem 0;
+  cursor: pointer;
 `;
 
-export function DirectMessages() {
-  const channels = [
-    'Bot',
-    'Jane Doe',
-    'Lance Amstrong',
-    'Johny Depp',
-    'Miley Cyrus',
-  ];
+interface DirectMessageProps {
+  channels: Channel[];
+}
+
+export function DirectMessages({ channels }: DirectMessageProps) {
+  const { dispatch } = React.useContext(StoreContext);
+
+  const selectChannel = (channel: { id: string; name: string }) => {
+    dispatch({ type: Actions.SELECTED_CHANNEL, payload: channel });
+  };
   return (
     <>
       <MessagesTitles>
@@ -34,9 +39,14 @@ export function DirectMessages() {
       </MessagesTitles>
       <ul>
         {channels.map((channel) => (
-          <MessageItem key={channel}>
-            <Status /> {channel}
-          </MessageItem>
+          <Item
+            onClick={() =>
+              selectChannel({ id: channel.id, name: channel.name })
+            }
+            key={channel.id}
+          >
+            <Status /> {channel.name}
+          </Item>
         ))}
       </ul>
     </>

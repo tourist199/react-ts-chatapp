@@ -1,7 +1,21 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import Channels from './Channels';
+import Channels, { Channel } from './Channels';
 import { DirectMessages } from './DirectMessage';
+import { gql, useQuery } from '@apollo/client';
+
+const membershipQuery = gql`
+  {
+    Membership(where: { userId: { _eq: "user1" } }) {
+      id
+      direct
+      Channel {
+        id
+        name
+      }
+    }
+  }
+`;
 
 const SideBarContainer = styled.div`
   height: 100%;
@@ -40,11 +54,30 @@ export const Status = styled.span`
   display: inline-block;
 `;
 
+interface Membership {
+  direct: boolean;
+  id: string;
+  Channel: Channel;
+}
+
 export default function SideBar() {
+  const [channels, setChannels] = useState<Channel[]>([
+    {
+      id: '1',
+      name: 'channel 1',
+    },
+    {
+      id: '2',
+      name: 'channel 2',
+    },
+  ]);
+
+  const { loading, error, data } = useQuery(membershipQuery);
+
   return (
     <SideBarContainer>
       <Header>
-        <H1>Slack clone</H1>
+        <H1>Chat</H1>
         <div>
           <i className="far fa-bell" />
         </div>
@@ -52,8 +85,28 @@ export default function SideBar() {
           <Status></Status> John Doe
         </UsernameContainer>
       </Header>
-      <Channels />
-      <DirectMessages />
+      <Channels
+        channels={
+          data
+            ? (data.Membership as Membership[])
+                .filter((membership) => !membership.direct)
+                .map((membership) => membership.Channel)
+            : []
+        }
+      />
+      <DirectMessages
+        channels={
+          data
+            ? (data.Membership as Membership[]).reduce((acc, value) => {
+                if (value.direct) {
+                  return [...acc, value.Channel];
+                }
+
+                return acc;
+              }, [] as Channel[])
+            : []
+        }
+      />
     </SideBarContainer>
   );
 }
