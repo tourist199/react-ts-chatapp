@@ -6,7 +6,7 @@ import { gql, useQuery } from '@apollo/client';
 
 const membershipQuery = gql`
   {
-    Membership(where: { userId: { _eq: "user1" } }) {
+    Membership(where: { userId: { _eq: "user2" } }) {
       id
       direct
       Channel {
@@ -61,16 +61,7 @@ interface Membership {
 }
 
 export default function SideBar() {
-  const [channels, setChannels] = useState<Channel[]>([
-    {
-      id: '1',
-      name: 'channel 1',
-    },
-    {
-      id: '2',
-      name: 'channel 2',
-    },
-  ]);
+  const [channels, setChannels] = useState<Channel[]>([]);
 
   const { loading, error, data } = useQuery(membershipQuery);
 

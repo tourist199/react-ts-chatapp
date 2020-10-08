@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { Item } from './DirectMessage';
 import { StoreContext, Actions } from '../store/store';
+import { Finder } from './Finder';
 
 const ChannelsTitles = styled.div`
   margin: 2rem 0 1rem;
@@ -48,9 +49,10 @@ export default function Channels({ channels }: ChanelProps) {
 
   return (
     <>
+      {isModalOpen ? <Finder exitCallback={() => setModal(false)} /> : null}
       <ChannelsTitles>
         <h2>Channel</h2>
-        <i className="fas fa-plus" />
+        <i className="fas fa-plus" onClick={() => setModal(true)} />
       </ChannelsTitles>
       <ul>
         {channels.map((channel) => (
