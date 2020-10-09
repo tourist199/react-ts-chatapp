@@ -8,6 +8,7 @@ import { debounce } from 'lodash';
 import { StoreContext, Actions } from '../../../store/store';
 import { joinChannel } from '../../../data/mutations';
 import { useMutation, useQuery } from '@apollo/client';
+import { Channel } from '../../Channels';
 
 interface Props {
   exitCallback: () => void;
@@ -60,6 +61,10 @@ export function JoinChannel(props: Props) {
   React.useEffect(() => {
     refectchRef.current = refetch;
   }, [refetch]);
+
+  React.useEffect(() => {
+    console.log(dataAllChannels);
+  });
 
   const filterChannels = (e: React.ChangeEvent<HTMLInputElement>) => {
     e.persist();
