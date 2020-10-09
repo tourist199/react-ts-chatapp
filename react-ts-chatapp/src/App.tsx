@@ -7,6 +7,9 @@ import { split, HttpLink } from '@apollo/client';
 import { getMainDefinition } from '@apollo/client/utilities';
 import { StoreContextProvider } from './store/store';
 
+import { ThemeProvider } from 'styled-components';
+import { theme } from './theme/theme';
+
 const httpLink = new HttpLink({
   uri: 'https://upright-liger-61.hasura.app/v1/graphql',
 });
@@ -40,9 +43,11 @@ function App() {
   return (
     <StoreContextProvider>
       <ApolloProvider client={client}>
-        <div className="App">
-          <Layout />
-        </div>
+        <ThemeProvider theme={theme}>
+          <div className="App">
+            <Layout />
+          </div>
+        </ThemeProvider>
       </ApolloProvider>
     </StoreContextProvider>
   );

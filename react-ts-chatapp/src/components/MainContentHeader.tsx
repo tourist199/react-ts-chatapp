@@ -9,10 +9,11 @@ const Container = styled.div`
   background-color: white;
   width: calc(100vw - 220px);
   display: flex;
+  flex-wrap: wrap;
   justify-content: space-between;
   align-items: center;
   padding: 1rem 0;
-  border-bottom: 1px solid lightgrey;
+  border-bottom: 1px solid ${(props) => props.theme.borderColorLight};
 `;
 
 const Title = styled.div`

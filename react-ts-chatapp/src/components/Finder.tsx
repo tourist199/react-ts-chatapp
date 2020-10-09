@@ -1,8 +1,8 @@
-import React, {useContext} from "react";
-import { StoreContext } from "../store/store";
-import styled from "styled-components";
-import { gql, useMutation } from "@apollo/client";
-import { CreateChannelMutation, CreateMembership } from "../data/mutations";
+import React, { useContext } from 'react';
+import { StoreContext } from '../store/store';
+import styled from 'styled-components';
+import { useMutation } from '@apollo/client';
+import { CreateChannelMutation, CreateMembership } from '../data/mutations';
 
 interface Props {
   exitCallback: () => void;
@@ -71,9 +71,10 @@ export function Finder(props: Props) {
         createMembership({
           variables: {
             channelId: data.insert_Channel!.returning[0].id,
-            userId: user
-          }
+            userId: user,
+          },
         });
+        props.exitCallback();
       },
     }
   );

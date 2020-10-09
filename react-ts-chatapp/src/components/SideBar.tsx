@@ -1,12 +1,13 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext } from 'react';
 import styled from 'styled-components';
 import Channels, { Channel } from './Channels';
 import { DirectMessages } from './DirectMessage';
-import { gql, useQuery } from '@apollo/client';
+import { gql, useSubscription } from '@apollo/client';
+import { StoreContext } from '../store/store';
 
-const membershipQuery = gql`
-  {
-    Membership(where: { userId: { _eq: "user2" } }) {
+const membershipSubcription = gql`
+  subscription SidebarSubcription($userId: String!) {
+    Membership(where: { userId: { _eq: $userId } }) {
       id
       direct
       Channel {
@@ -61,9 +62,12 @@ interface Membership {
 }
 
 export default function SideBar() {
-  const [channels, setChannels] = useState<Channel[]>([]);
+  // const [channels, setChannels] = useState<Channel[]>([]);
+  const { user } = useContext(StoreContext);
 
-  const { loading, error, data } = useQuery(membershipQuery);
+  const { loading, error, data } = useSubscription(membershipSubcription, {
+    variables: { userId: user },
+  });
 
   return (
     <SideBarContainer>

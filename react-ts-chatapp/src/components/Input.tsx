@@ -3,35 +3,38 @@ import styled from 'styled-components';
 import { gql, useMutation } from '@apollo/client';
 import { StoreContext } from '../store/store';
 
+const SubmitButton = styled.button`
+  outline: none;
+  background-color: transparent;
+  border: none;
+  border-left: ${(props) => `3px solid ${props.theme.borderColorDark}`};
+  position: fixed;
+  box-sizing: border-box;
+  padding: 1rem;
+  font-size: 1rem;
+  right: 27px;
+  bottom: 13px;
+  cursor: pointer;
+`;
+
 const InputStyle = styled.input`
   padding: 1rem;
   border-radius: 7px;
-  border: 3px solid darkgrey;
+  border: 3px solid ${(props) => props.theme.borderColorDark};
   font-size: 1rem;
   outline: none;
   &:hover,
   &:active,
   &:focus {
-    border: 3px solid dimgray;
+    border: 3px solid ${(props) => props.theme.hoverBorderColor};
+    & + ${SubmitButton} {
+      border-left: 3px solid ${(props) => props.theme.hoverBorderColor};
+    }
   }
   box-sizing: border-box;
   position: fixed;
   bottom: 10px;
   width: calc(100vw - 220px);
-`;
-
-const SubmitButton = styled.button`
-  border-radius: 7px;
-  outline: none;
-  background-color: white;
-  border: none;
-  border-left: 3px solid darkgrey;
-  position: fixed;
-  box-sizing: border-box;
-  padding: 1.125rem;
-  right: 27px;
-  bottom: 15px;
-  cursor: pointer;
 `;
 
 const submitMessageMutation = gql`

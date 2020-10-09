@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { Item } from './DirectMessage';
 import { StoreContext, Actions } from '../store/store';
-import { Finder } from './Finder';
+import { Finder } from './Sidebar/Channels/CreateChannel.component';
 
 const ChannelsTitles = styled.div`
   margin: 2rem 0 1rem;
@@ -19,7 +19,7 @@ const ChannelsTitles = styled.div`
 const Button = styled.button`
   background-color: transparent;
   padding: 5px;
-  color: white;
+  color: ${(props) => props.theme.textColorLight};
   border: none;
   font-size: 1rem;
   &.channel-button {
@@ -66,7 +66,7 @@ export default function Channels({ channels }: ChanelProps) {
           </Item>
         ))}
       </ul>
-      <Button className="channel-button">
+      <Button className="channel-button" onClick={() => setModal(true)}>
         <i className="fas fa-plus" />
         Add channel
       </Button>
