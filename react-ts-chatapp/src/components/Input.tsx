@@ -58,7 +58,6 @@ export function InputMessage() {
 
   const onHandleSubmit = (e: any) => {
     e.preventDefault();
-    console.log((e.target as any).message.value);
 
     submitMessage({
       variables: {

@@ -11,7 +11,9 @@ const initialChannel = localStorage.getItem('selected_channel')
 
 const initialStoreValue = {
   selectedChannel: initialChannel,
-  user: localStorage.getItem('current_user') || '',
+  user: localStorage.getItem('current_user')
+    ? JSON.parse(localStorage.getItem('current_user'))
+    : '',
 };
 
 export const StoreContext = React.createContext<Context>({
@@ -23,13 +25,16 @@ type SelectedChannelAction = {
   type: Actions.SELECTED_CHANNEL;
   payload: { id: string; name: string };
 };
-type UserAction = { type: Actions.USER; payload: string };
+type UserAction = {
+  type: Actions.USER;
+  payload: { id: string; username: string };
+};
 
 type Action = SelectedChannelAction | UserAction;
 
 interface State {
   selectedChannel: { id: string; name: string };
-  user: string;
+  user: { id: string; username: string };
 }
 
 interface Context extends State {

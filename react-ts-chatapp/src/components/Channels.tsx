@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { Item } from './DirectMessage';
 import { StoreContext, Actions } from '../store/store';
 import { Finder } from './Sidebar/Channels/CreateChannel.component';
+import { JoinChannel } from './Sidebar/Channels/JoinChannel.component';
 
 const ChannelsTitles = styled.div`
   margin: 2rem 0 1rem;
@@ -42,6 +43,9 @@ interface ChanelProps {
 export default function Channels({ channels }: ChanelProps) {
   const { dispatch } = React.useContext(StoreContext);
   const [isModalOpen, setModal] = React.useState(false);
+  const [isJoinChannelOpen, setJoinChannelModal] = React.useState<boolean>(
+    false
+  );
 
   const selectChannel = (channel: { id: string; name: string }) => {
     dispatch({ type: Actions.SELECTED_CHANNEL, payload: channel });
@@ -50,6 +54,9 @@ export default function Channels({ channels }: ChanelProps) {
   return (
     <>
       {isModalOpen ? <Finder exitCallback={() => setModal(false)} /> : null}
+      {isJoinChannelOpen ? (
+        <JoinChannel exitCallback={() => setJoinChannelModal(false)} />
+      ) : null}
       <ChannelsTitles>
         <h2>Channel</h2>
         <i className="fas fa-plus" onClick={() => setModal(true)} />
@@ -66,7 +73,10 @@ export default function Channels({ channels }: ChanelProps) {
           </Item>
         ))}
       </ul>
-      <Button className="channel-button" onClick={() => setModal(true)}>
+      <Button
+        className="channel-button"
+        onClick={() => setJoinChannelModal(true)}
+      >
         <i className="fas fa-plus" />
         Add channel
       </Button>

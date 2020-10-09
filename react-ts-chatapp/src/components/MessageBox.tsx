@@ -2,11 +2,13 @@ import React, { useEffect, useState, useContext } from 'react';
 import styled from 'styled-components';
 import { gql, useSubscription } from '@apollo/client';
 import { StoreContext } from '../store/store';
+import { messageSubscription } from '../data/subscriptions';
 
 const Container = styled.div`
   margin-top: 65px;
   overflow-y: auto;
   height: calc(100vh - 85px - 80px);
+
   li {
     margin: 0.5rem;
   }
@@ -26,18 +28,18 @@ const DateSpan = styled.span`
   color: darkgray;
 `;
 
-const messageSubscription = gql`
-  subscription MessageSubscription($channelId: uuid) {
-    Message(where: { channelId: { _eq: $channelId } }) {
-      id
-      date
-      body
-      User {
-        username
-      }
-    }
-  }
-`;
+// const messageSubscription = gql`
+//   subscription MessageSubscription($channelId: uuid) {
+//     Message(where: { channelId: { _eq: $channelId } }) {
+//       id
+//       date
+//       body
+//       User {
+//         username
+//       }
+//     }
+//   }
+// `;
 
 interface Message {
   id: string;
