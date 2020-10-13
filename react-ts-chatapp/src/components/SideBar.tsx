@@ -64,10 +64,10 @@ interface Membership {
 
 export default function SideBar() {
   // const [channels, setChannels] = useState<Channel[]>([]);
-  const { user } = useContext(StoreContext);
+  const { user,userData, isAuth } = useContext(StoreContext);
   const {
     loginWithRedirect,
-    user: userData,
+    user: userAuth0,
     isAuthenticated,
     isLoading,
   } = useAuth0();
@@ -76,12 +76,20 @@ export default function SideBar() {
     variables: { userId: user },
   });
 
-  return isAuthenticated ? (
+  React.useEffect(()=> {
+    console.log(isAuthenticated, userData);
+    if (isAuthenticated && userAuth0) {
+      localStorage.setItem("isAuthenticated", JSON.stringify(isAuthenticated));
+      localStorage.setItem("userData", JSON.stringify(userAuth0));
+    }
+  }, [isAuthenticated, userAuth0])
+
+  return isAuth ? (
     <SideBarContainer>
       <div>
-        <img src={userData.picture} alt={userData.name} />
-        <h2>{userData.name}</h2>
-        <p>{userData.email}</p>
+        <img src={userData!.picture} alt={userData!.name} height={100} />
+        <h2>{userData!.name}</h2>
+        <p>{userData!.email}</p>
       </div>
       <Header>
         <H1>Chat</H1>
@@ -116,9 +124,9 @@ export default function SideBar() {
       />
     </SideBarContainer>
   ) : (
-    <div>
+    <SideBarContainer>
       <button onClick={() => loginWithRedirect()}>Log In</button>
       <div>Loading ...</div>
-    </div>
+    </SideBarContainer>
   );
 }
