@@ -7,6 +7,8 @@ import { split, HttpLink } from '@apollo/client';
 import { getMainDefinition } from '@apollo/client/utilities';
 import { StoreContextProvider } from './store/store';
 
+import { Auth0Provider } from '@auth0/auth0-react';
+
 import { ThemeProvider } from 'styled-components';
 import { theme } from './theme/theme';
 
@@ -41,15 +43,21 @@ const client = new ApolloClient({
 
 function App() {
   return (
-    <StoreContextProvider>
-      <ApolloProvider client={client}>
-        <ThemeProvider theme={theme}>
-          <div className="App">
-            <Layout />
-          </div>
-        </ThemeProvider>
-      </ApolloProvider>
-    </StoreContextProvider>
+    <Auth0Provider
+      domain="chap.us.auth0.com"
+      clientId="rcYbWZSqLZHNw4LloKsacP2X4IRPOWD9"
+      redirectUri={window.location.origin}
+    >
+      <StoreContextProvider>
+        <ApolloProvider client={client}>
+          <ThemeProvider theme={theme}>
+            <div className="App">
+              <Layout />
+            </div>
+          </ThemeProvider>
+        </ApolloProvider>
+      </StoreContextProvider>
+    </Auth0Provider>
   );
 }
 

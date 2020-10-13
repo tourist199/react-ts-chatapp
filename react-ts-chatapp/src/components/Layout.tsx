@@ -13,7 +13,7 @@ const Container = styled.div`
 export default function Layout() {
   return (
     <Container>
-      <SideBar></SideBar>
+      <SideBar />
       <MainContent />
     </Container>
   );

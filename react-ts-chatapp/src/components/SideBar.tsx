@@ -4,6 +4,7 @@ import Channels, { Channel } from './Channels';
 import { DirectMessages } from './DirectMessage';
 import { gql, useSubscription } from '@apollo/client';
 import { StoreContext } from '../store/store';
+import { useAuth0 } from '@auth0/auth0-react';
 
 const membershipSubcription = gql`
   subscription SidebarSubcription($userId: String!) {
@@ -64,13 +65,24 @@ interface Membership {
 export default function SideBar() {
   // const [channels, setChannels] = useState<Channel[]>([]);
   const { user } = useContext(StoreContext);
+  const {
+    loginWithRedirect,
+    user: userData,
+    isAuthenticated,
+    isLoading,
+  } = useAuth0();
 
   const { loading, error, data } = useSubscription(membershipSubcription, {
     variables: { userId: user },
   });
 
-  return (
+  return isAuthenticated ? (
     <SideBarContainer>
+      <div>
+        <img src={userData.picture} alt={userData.name} />
+        <h2>{userData.name}</h2>
+        <p>{userData.email}</p>
+      </div>
       <Header>
         <H1>Chat</H1>
         <div>
@@ -103,5 +115,10 @@ export default function SideBar() {
         }
       />
     </SideBarContainer>
+  ) : (
+    <div>
+      <button onClick={() => loginWithRedirect()}>Log In</button>
+      <div>Loading ...</div>
+    </div>
   );
 }
