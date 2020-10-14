@@ -60,7 +60,7 @@ const Form = styled.form`
 `;
 
 export function Finder(props: Props) {
-  const { user } = React.useContext(StoreContext);
+  const { userData } = React.useContext(StoreContext);
   const [inputValue, setInputValue] = React.useState<string>('');
   const [createMembership, { data: dataMembership }] = useMutation(
     CreateMembership
@@ -72,7 +72,7 @@ export function Finder(props: Props) {
         createMembership({
           variables: {
             channelId: data.insert_Channel!.returning[0].id,
-            userId: user,
+            userId: userData!.sub,
           },
         });
         props.exitCallback();

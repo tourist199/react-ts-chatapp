@@ -8,7 +8,7 @@ import { debounce } from 'lodash';
 import { StoreContext, Actions } from '../../../store/store';
 import { joinChannel } from '../../../data/mutations';
 import { useMutation, useQuery } from '@apollo/client';
-import { Channel } from '../../Channels';
+import { Channel } from '../../../components/Channels';
 
 interface Props {
   exitCallback: () => void;
@@ -36,7 +36,7 @@ const SearchInput = styled(Input)`
 `;
 
 export function JoinChannel(props: Props) {
-  const { user, dispatch } = React.useContext(StoreContext);
+  const { userData, dispatch } = React.useContext(StoreContext);
   const refectchRef = React.useRef<Function>();
   const createMembershipRef = React.useRef();
   const fetchData = debounce((e: React.ChangeEvent<HTMLInputElement>) => {
@@ -72,15 +72,17 @@ export function JoinChannel(props: Props) {
   };
 
   function selectChannel(
-    channel: { id: string; name: string },
+    channel: { id: string; name: string; members: number },
     memberships: { userId: string }[]
   ) {
-    if (memberships.some((membership) => membership.userId === user)) {
+    if (memberships.some((membership) => membership.userId === userData!.sub)) {
       dispatch({ type: Actions.SELECTED_CHANNEL, payload: channel });
     } else {
       (createMembershipRef as any)
 
-        .current({ variables: { channelId: channel.id, userId: user } })
+        .current({
+          variables: { channelId: channel.id, userId: userData!.sub },
+        })
         .then((resp: any) => {
           const channelAffiliation =
             resp.data.insert_Membership.returning[0].Channel;
@@ -109,13 +111,17 @@ export function JoinChannel(props: Props) {
             return null;
           }}
           {dataAllChannels &&
-            dataAllChannels.Channel.map((channel: any) => {
+            dataAllChannels.Channel.map((channel: Channel) => {
               return (
                 <ChannelItem
                   key={channel.id}
                   onClick={() =>
                     selectChannel(
-                      { id: channel.id, name: channel.name },
+                      {
+                        id: channel.id,
+                        name: channel.name,
+                        members: channel.Memberships_aggregate.aggregate.count,
+                      },
                       channel.Memberships
                     )
                   }

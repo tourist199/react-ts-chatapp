@@ -3,17 +3,23 @@ import styled from 'styled-components';
 import Channels, { Channel } from './Channels';
 import { DirectMessages } from './DirectMessage';
 import { gql, useSubscription } from '@apollo/client';
-import { StoreContext } from '../store/store';
+import { StoreContext, Actions, UserData } from '../store/store';
 import { useAuth0 } from '@auth0/auth0-react';
 
 const membershipSubcription = gql`
-  subscription SidebarSubcription($userId: String!) {
-    Membership(where: { userId: { _eq: $userId } }) {
+  subscription membershipSubcription($userId: String!) {
+    Channel(where: { Memberships: { userId: { _eq: $userId } } }) {
       id
-      direct
-      Channel {
+      name
+      Memberships {
+        userId
+        direct
         id
-        name
+      }
+      Memberships_aggregate {
+        aggregate {
+          count
+        }
       }
     }
   }
@@ -64,7 +70,7 @@ interface Membership {
 
 export default function SideBar() {
   // const [channels, setChannels] = useState<Channel[]>([]);
-  const { user,userData, isAuth } = useContext(StoreContext);
+  const { userData, isAuth, dispatch } = useContext(StoreContext);
   const {
     loginWithRedirect,
     user: userAuth0,
@@ -72,17 +78,27 @@ export default function SideBar() {
     isLoading,
   } = useAuth0();
 
+  const updateUserData = (userData: UserData) => {
+    dispatch({ type: Actions.USER_DATA, payload: userData });
+  };
+
+  const updateIsAuth = (_isAuth: boolean) => {
+    dispatch({ type: Actions.UPDATE_IS_AUTH, payload: _isAuth });
+  };
+
   const { loading, error, data } = useSubscription(membershipSubcription, {
-    variables: { userId: user },
+    variables: { userId: userData!.sub },
   });
 
-  React.useEffect(()=> {
+  console.log(userData!.sub, data);
+
+  React.useEffect(() => {
     console.log(isAuthenticated, userData);
     if (isAuthenticated && userAuth0) {
-      localStorage.setItem("isAuthenticated", JSON.stringify(isAuthenticated));
-      localStorage.setItem("userData", JSON.stringify(userAuth0));
+      updateIsAuth(true);
+      updateUserData(userAuth0);
     }
-  }, [isAuthenticated, userAuth0])
+  }, [isAuthenticated, userData]);
 
   return isAuth ? (
     <SideBarContainer>
@@ -97,31 +113,27 @@ export default function SideBar() {
           <i className="far fa-bell" />
         </div>
         <UsernameContainer>
-          <Status></Status> John Doe
+          <Status></Status> {userData!.name}
         </UsernameContainer>
       </Header>
-      <Channels
-        channels={
-          data
-            ? (data.Membership as Membership[])
-                .filter((membership) => !membership.direct)
-                .map((membership) => membership.Channel)
-            : []
-        }
-      />
-      <DirectMessages
-        channels={
-          data
-            ? (data.Membership as Membership[]).reduce((acc, value) => {
-                if (value.direct) {
-                  return [...acc, value.Channel];
-                }
+      {!loading && data && data.Channel ? (
+        <>
+          <Channels
+            channels={(data.Channel as Channel[]).filter(
+              (chanel) => !chanel.Memberships[0].direct
+            )}
+          />
+          <DirectMessages
+            channels={(data.Channel as Channel[]).reduce((acc, value) => {
+              if (value.Memberships[0].direct) {
+                return [...acc, value];
+              }
 
-                return acc;
-              }, [] as Channel[])
-            : []
-        }
-      />
+              return acc;
+            }, [] as Channel[])}
+          />
+        </>
+      ) : null}
     </SideBarContainer>
   ) : (
     <SideBarContainer>

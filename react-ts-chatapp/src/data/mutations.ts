@@ -1,4 +1,5 @@
 import gql from 'graphql-tag';
+import { createMembershipTemplateMutation } from '../utils';
 
 export const CreateChannelMutation = gql`
   mutation CreateChannel($name: String) {
@@ -46,6 +47,27 @@ export const joinChannel = gql`
           id
           name
         }
+      }
+    }
+  }
+`;
+
+export const createDMChannel = (userIds: string[]) => gql`
+  mutation CreateDMChannel($title: String) {
+    insert_Channel(
+      objects: {
+        name: $title
+        group: ""
+        Memberships: {
+          data: [
+            ${createMembershipTemplateMutation(userIds).join(',')}
+          ]
+        }
+      }
+    ) {
+      returning {
+        id
+        name
       }
     }
   }

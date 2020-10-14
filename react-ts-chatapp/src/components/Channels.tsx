@@ -31,9 +31,22 @@ const Button = styled.button`
   }
 `;
 
+export interface Membership {
+  direct: boolean;
+  id: string;
+  userId: string;
+}
+
+interface Memberships_aggregate {
+  aggregate: {
+    count: number;
+  };
+}
 export interface Channel {
   id: string;
   name: string;
+  Memberships: Membership[];
+  Memberships_aggregate: Memberships_aggregate;
 }
 
 interface ChanelProps {
@@ -47,7 +60,11 @@ export default function Channels({ channels }: ChanelProps) {
     false
   );
 
-  const selectChannel = (channel: { id: string; name: string }) => {
+  const selectChannel = (channel: {
+    id: string;
+    name: string;
+    members: number;
+  }) => {
     dispatch({ type: Actions.SELECTED_CHANNEL, payload: channel });
   };
 
@@ -65,7 +82,11 @@ export default function Channels({ channels }: ChanelProps) {
         {channels.map((channel) => (
           <Item
             onClick={() =>
-              selectChannel({ id: channel.id, name: channel.name })
+              selectChannel({
+                id: channel.id,
+                name: channel.name,
+                members: channel.Memberships_aggregate.aggregate.count || 0,
+              })
             }
             key={channel.id}
           >
@@ -78,7 +99,7 @@ export default function Channels({ channels }: ChanelProps) {
         onClick={() => setJoinChannelModal(true)}
       >
         <i className="fas fa-plus" />
-        Add channel
+        Join channel
       </Button>
     </>
   );

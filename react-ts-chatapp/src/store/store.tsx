@@ -3,9 +3,11 @@ import * as React from 'react';
 export enum Actions {
   'SELECTED_CHANNEL',
   'USER',
+  'USER_DATA',
+  'UPDATE_IS_AUTH',
 }
 
-interface UserData {
+export interface UserData {
   email: string;
   email_verified: boolean;
   family_name: string;
@@ -15,14 +17,14 @@ interface UserData {
   nickname: string;
   picture: string;
   sub: string;
-  updated_at: string
+  updated_at: string;
 }
 
 interface State {
-  selectedChannel: { id: string; name: string };
+  selectedChannel: { id: string; name: string; members: number };
   user: string;
   userData: UserData | null;
-  isAuth: boolean
+  isAuth: boolean;
 }
 
 interface Context extends State {
@@ -31,9 +33,17 @@ interface Context extends State {
 
 const initialChannel = localStorage.getItem('selected_channel')
   ? JSON.parse(localStorage.getItem('selected_channel')!)
-  : { id: '607c38e6-69ce-4468-9877-acd3021cb84a', name: 'user1-user2' };
+  : {
+      id: '607c38e6-69ce-4468-9877-acd3021cb84a',
+      name: 'user1-user2',
+      members: 999,
+    };
 
-const  initialUserData = localStorage.getItem('userData') && (localStorage.getItem('userData') != 'undefined') ? JSON.parse( localStorage.getItem('userData')!) : null
+const initialUserData =
+  localStorage.getItem('userData') &&
+  localStorage.getItem('userData') != 'undefined'
+    ? JSON.parse(localStorage.getItem('userData')!)
+    : null;
 
 const initialStoreValue = {
   selectedChannel: initialChannel,
@@ -49,11 +59,19 @@ export const StoreContext = React.createContext<Context>({
 
 type SelectedChannelAction = {
   type: Actions.SELECTED_CHANNEL;
-  payload: { id: string; name: string };
+  payload: { id: string; name: string; members: number };
 };
 type UserAction = { type: Actions.USER; payload: string };
 
-type Action = SelectedChannelAction | UserAction;
+type UserDataAction = { type: Actions.USER_DATA; payload: UserData };
+
+type IsAuthAction = { type: Actions.UPDATE_IS_AUTH; payload: boolean };
+
+type Action =
+  | SelectedChannelAction
+  | UserAction
+  | UserDataAction
+  | IsAuthAction;
 
 function storeReducer(state: State, action: Action): State {
   switch (action.type) {
@@ -61,6 +79,10 @@ function storeReducer(state: State, action: Action): State {
       return { ...state, selectedChannel: action.payload };
     case Actions.USER:
       return { ...state, user: action.payload };
+    case Actions.USER_DATA:
+      return { ...state, userData: action.payload };
+    case Actions.UPDATE_IS_AUTH:
+      return { ...state, isAuth: action.payload };
     default:
       throw new Error();
   }
@@ -77,6 +99,7 @@ export function StoreContextProvider(props: Props) {
       'selected_channel',
       JSON.stringify(store.selectedChannel)
     );
+    console.log(store.selectedChannel);
   }, [store.selectedChannel]);
 
   React.useEffect(() => {
@@ -88,6 +111,15 @@ export function StoreContextProvider(props: Props) {
       }
     }
   }, [store.user]);
+
+  React.useEffect(() => {
+    localStorage.setItem('userData', JSON.stringify(store.userData));
+  }, [store.userData]);
+
+  React.useEffect(() => {
+    localStorage.setItem('isAuthenticated', JSON.stringify(store.isAuth));
+  }, [store.isAuth]);
+
   return (
     <StoreContext.Provider value={{ ...store, dispatch }}>
       {props.children}

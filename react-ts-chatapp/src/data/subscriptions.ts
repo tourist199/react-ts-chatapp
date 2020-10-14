@@ -13,18 +13,18 @@ export const messageSubscription = gql`
   }
 `;
 
-export const membershipSubscription = gql`
-  subscription SidebarSubscription {
-    Membership(where: { userId: { _eq: "user1" } }) {
-      id
-      direct
-      Chanel {
-        id
-        name
-      }
-    }
-  }
-`;
+// export const membershipSubcription = gql`
+//   subscription SidebarSubcription($userId: String!) {
+//     Membership(where: { userId: { _eq: $userId } }) {
+//       id
+//       direct
+//       Channel {
+//         id
+//         name
+//       }
+//     }
+//   }
+// `;
 
 export const allChannelsSubcription = gql`
   subscription AllChannelsSubcription($channelName: String) {
@@ -38,6 +38,24 @@ export const allChannelsSubcription = gql`
       name
       Memberships {
         userId
+      }
+    }
+  }
+`;
+export const membershipSubcription = gql`
+  subscription SidebarSubcription($user: String) {
+    Channel(where: { Memberships: { userId: { _eq: $user } } }) {
+      id
+      name
+      Memberships {
+        userId
+        direct
+        id
+      }
+      Memberships_aggregate {
+        aggregate {
+          count
+        }
       }
     }
   }

@@ -54,16 +54,14 @@ const submitMessageMutation = gql`
 
 export function InputMessage() {
   const [submitMessage, { data }] = useMutation(submitMessageMutation);
-  const { selectedChannel } = React.useContext(StoreContext);
-  const { user } = React.useContext(StoreContext);
-  console.log(user);
+  const { selectedChannel, userData } = React.useContext(StoreContext);
 
   const onHandleSubmit = (e: any) => {
     e.preventDefault();
 
     submitMessage({
       variables: {
-        userId: user,
+        userId: userData!.sub,
         channelId: selectedChannel.id,
         body: (e.target as any).message.value,
       },
