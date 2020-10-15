@@ -7,7 +7,7 @@ const Container = styled.div`
   top: 0;
   z-index: 5;
   background-color: white;
-  width: calc(100vw - 220px);
+  width: calc(100vw - 240px);
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
@@ -48,7 +48,6 @@ const Input = styled.input`
 
 export default function MainContentHeader() {
   const { selectedChannel } = useContext(StoreContext);
-  console.log(selectedChannel);
 
   return (
     <Container>

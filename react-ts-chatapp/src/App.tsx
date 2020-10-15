@@ -39,19 +39,19 @@ const client = new ApolloClient({
   // uri: 'https://upright-liger-61.hasura.app/v1/graphql',
   link,
   cache: new InMemoryCache(),
-  defaultOptions: {
-    watchQuery: {
-      fetchPolicy: 'network-only',
-      errorPolicy: 'all'
-    },
-    query: {
-      fetchPolicy: 'no-cache',
-      errorPolicy: 'all'
-    },
-    mutate: {
-      errorPolicy: 'all'
-    }
-  }
+  // defaultOptions: {
+  //   watchQuery: {
+  //     fetchPolicy: 'network-only',
+  //     errorPolicy: 'all'
+  //   },
+  //   query: {
+  //     fetchPolicy: 'no-cache',
+  //     errorPolicy: 'all'
+  //   },
+  //   mutate: {
+  //     errorPolicy: 'all'
+  //   }
+  // }
 });
 
 function App() {

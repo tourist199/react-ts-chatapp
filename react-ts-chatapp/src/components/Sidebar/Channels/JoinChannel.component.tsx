@@ -23,7 +23,7 @@ const ChannelItem = styled.div`
 
 const ChannelContainer = styled.div`
   margin-top: 2rem;
-  max-height: calc(100vh - 200px);
+  max-height: calc(100vh - 300px);
   overflow-y: auto;
   ${ChannelItem}:last-child {
     border-bottom: 1px solid ${(props) => props.theme.borderColorLight};
@@ -107,9 +107,6 @@ export function JoinChannel(props: Props) {
         </Form>
 
         <ChannelContainer>
-          {() => {
-            return null;
-          }}
           {dataAllChannels &&
             dataAllChannels.Channel.map((channel: Channel) => {
               return (

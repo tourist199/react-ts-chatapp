@@ -4,6 +4,8 @@ import { Item } from './DirectMessage';
 import { StoreContext, Actions } from '../store/store';
 import { Finder } from './Sidebar/Channels/CreateChannel.component';
 import { JoinChannel } from './Sidebar/Channels/JoinChannel.component';
+import Loader from 'react-loader-spinner';
+import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css';
 
 const ChannelsTitles = styled.div`
   margin: 2rem 0 1rem;
@@ -15,6 +17,10 @@ const ChannelsTitles = styled.div`
   h2 {
     font-size: 1rem;
   }
+
+  i {
+    cursor: pointer;
+  }
 `;
 
 const Button = styled.button`
@@ -23,6 +29,8 @@ const Button = styled.button`
   color: ${(props) => props.theme.textColorLight};
   border: none;
   font-size: 1rem;
+  cursor: pointer;
+
   &.channel-button {
     margin-top: 1rem;
     i {
@@ -51,9 +59,10 @@ export interface Channel {
 
 interface ChanelProps {
   channels: Channel[];
+  loading: boolean;
 }
 
-export default function Channels({ channels }: ChanelProps) {
+export default function Channels({ channels, loading }: ChanelProps) {
   const { dispatch } = React.useContext(StoreContext);
   const [isModalOpen, setModal] = React.useState(false);
   const [isJoinChannelOpen, setJoinChannelModal] = React.useState<boolean>(
@@ -78,22 +87,27 @@ export default function Channels({ channels }: ChanelProps) {
         <h2>Channel</h2>
         <i className="fas fa-plus" onClick={() => setModal(true)} />
       </ChannelsTitles>
-      <ul>
-        {channels.map((channel) => (
-          <Item
-            onClick={() =>
-              selectChannel({
-                id: channel.id,
-                name: channel.name,
-                members: channel.Memberships_aggregate.aggregate.count || 0,
-              })
-            }
-            key={channel.id}
-          >
-            # {channel.name}
-          </Item>
-        ))}
-      </ul>
+      {loading ? (
+        <Loader type="ThreeDots" color="#4b6584" height={50} width={50} />
+      ) : (
+        <ul>
+          {channels!.map((channel) => (
+            <Item
+              onClick={() =>
+                selectChannel({
+                  id: channel.id,
+                  name: channel.name,
+                  members: channel.Memberships_aggregate.aggregate.count || 0,
+                })
+              }
+              key={channel.id}
+            >
+              # {channel.name}
+            </Item>
+          ))}
+        </ul>
+      )}
+
       <Button
         className="channel-button"
         onClick={() => setJoinChannelModal(true)}

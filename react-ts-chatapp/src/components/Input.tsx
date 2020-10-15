@@ -34,7 +34,7 @@ const InputStyle = styled.input`
   box-sizing: border-box;
   position: fixed;
   bottom: 10px;
-  width: calc(100vw - 220px);
+  width: calc(100vw - 240px);
 `;
 
 const submitMessageMutation = gql`
@@ -58,15 +58,16 @@ export function InputMessage() {
 
   const onHandleSubmit = (e: any) => {
     e.preventDefault();
-
-    submitMessage({
-      variables: {
-        userId: userData!.sub,
-        channelId: selectedChannel.id,
-        body: (e.target as any).message.value,
-      },
-    });
-    (e.target as any).reset();
+    if ((e.target as any).message.value) {
+      submitMessage({
+        variables: {
+          userId: userData!.sub,
+          channelId: selectedChannel.id,
+          body: (e.target as any).message.value,
+        },
+      });
+      (e.target as any).reset();
+    }
   };
 
   return (

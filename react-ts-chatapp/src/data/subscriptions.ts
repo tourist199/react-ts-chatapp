@@ -8,6 +8,7 @@ export const messageSubscription = gql`
       body
       User {
         username
+        picture
       }
     }
   }

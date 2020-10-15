@@ -5,7 +5,7 @@ import { Input } from '../../../styles/Input.styles';
 import { CloseButton, SubmitButton, Form } from '../../../styles/ModalButtons';
 import { allUsersQuery, checkMembership } from '../../../data/queries';
 import { StoreContext, Actions } from '../../../store/store';
-import { DataContainer, DataItem } from '../../../styles/DataModal.styles';
+import { DataItem } from '../../../styles/DataModal.styles';
 import { debounce, random } from 'lodash';
 import { useQuery, ApolloClient, useMutation } from '@apollo/client';
 import { createDMChannel } from '../../../data/mutations';
@@ -31,6 +31,15 @@ const UserTag = styled.div`
   color: white;
   border-radius: 0.5rem;
   position: relative;
+`;
+
+const DataContainer = styled.div`
+  margin-top: 2rem;
+  max-height: calc(100vh - 470px);
+  overflow-y: auto;
+  ${DataItem}:last-child {
+    border-bottom: 1px solid ${(props) => props.theme.borderColorLight};
+  }
 `;
 
 const UserDeleteTag = styled.span.attrs({
@@ -136,28 +145,26 @@ export function JoinDmComponent(props: Props) {
         {loading ? (
           <p>loading</p>
         ) : (
-          <>
-            <DataContainer>
-              {dataUsers.User.map((user: { id: string; username: string }) => (
-                <DataItem
-                  key={user.id}
-                  onClick={() =>
-                    setSelectedUser((prevState: User[]) => {
-                      if (prevState.find((us) => us.id === user.id)) {
-                        return prevState;
-                      }
-                      return [
-                        ...prevState,
-                        { ...user, color: colors[random(0, 4)] },
-                      ];
-                    })
-                  }
-                >
-                  @ {user.username}
-                </DataItem>
-              ))}
-            </DataContainer>
-          </>
+          <DataContainer>
+            {dataUsers.User.map((user: { id: string; username: string }) => (
+              <DataItem
+                key={user.id}
+                onClick={() =>
+                  setSelectedUser((prevState: User[]) => {
+                    if (prevState.find((us) => us.id === user.id)) {
+                      return prevState;
+                    }
+                    return [
+                      ...prevState,
+                      { ...user, color: colors[random(0, 4)] },
+                    ];
+                  })
+                }
+              >
+                @ {user.username}
+              </DataItem>
+            ))}
+          </DataContainer>
         )}
       </>
     </Modal>

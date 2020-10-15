@@ -11,6 +11,7 @@ const Container = styled.div`
   flex-direction: column;
   justify-content: space-between;
   box-sizing: border-box;
+  position: relative;
 `;
 
 export default function MainContain() {

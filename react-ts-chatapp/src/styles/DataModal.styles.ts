@@ -9,7 +9,7 @@ export const DataItem = styled.div`
 
 export const DataContainer = styled.div`
   margin-top: 2rem;
-  max-height: calc(100vh - 200px);
+  max-height: calc(100vh - 300px);
   min-height: 0;
   transition: all 0.5 ease-in;
   overflow-y: auto;

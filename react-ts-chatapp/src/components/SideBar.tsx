@@ -90,24 +90,31 @@ export default function SideBar() {
     variables: { userId: userData && userData.sub ? userData.sub : 'user1' },
   });
 
-  console.log(userAuth0);
-
   React.useEffect(() => {
-    console.log(isAuthenticated, userData);
     if (isAuthenticated && userAuth0) {
       updateIsAuth(true);
       updateUserData(userAuth0);
     }
   }, [isAuthenticated, userData]);
 
-  console.log(localStorage.getItem('isAuthenticated') !== 'false');
-
-  console.log(isAuth);
-
   return isAuth ? (
     <SideBarContainer>
       <div>
-        <img src={userData!.picture} alt={userData!.name} height={100} />
+        <div
+          style={{
+            display: 'flex',
+            justifyContent: 'center',
+          }}
+        >
+          <img
+            src={userData!.picture}
+            alt={userData!.name}
+            height={60}
+            width={60}
+            style={{ borderRadius: '100%' }}
+          />
+        </div>
+
         <h2>{userData!.name}</h2>
         <p>{userData!.email}</p>
       </div>
@@ -120,24 +127,32 @@ export default function SideBar() {
           <Status></Status> {userData!.name}
         </UsernameContainer>
       </Header>
-      {!loading && data && data.Channel ? (
-        <>
-          <Channels
-            channels={(data.Channel as Channel[]).filter(
-              (chanel) => !chanel.Memberships[0].direct
-            )}
-          />
-          <DirectMessages
-            channels={(data.Channel as Channel[]).reduce((acc, value) => {
-              if (value.Memberships[0].direct) {
-                return [...acc, value];
-              }
+      <>
+        <Channels
+          channels={
+            data
+              ? (data.Channel as Channel[]).filter(
+                  (chanel) => !chanel.Memberships[0].direct
+                )
+              : []
+          }
+          loading={loading}
+        />
+        <DirectMessages
+          loading={loading}
+          channels={
+            data
+              ? (data.Channel as Channel[]).reduce((acc, value) => {
+                  if (value.Memberships[0].direct) {
+                    return [...acc, value];
+                  }
 
-              return acc;
-            }, [] as Channel[])}
-          />
-        </>
-      ) : null}
+                  return acc;
+                }, [] as Channel[])
+              : []
+          }
+        />
+      </>
     </SideBarContainer>
   ) : (
     <SideBarContainer>
