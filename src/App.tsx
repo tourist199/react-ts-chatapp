@@ -1,23 +1,23 @@
-import React from 'react';
-import Layout from './components/Layout';
+import React from "react";
+import Layout from "./components/Layout";
 
-import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client';
-import { WebSocketLink } from '@apollo/client/link/ws';
-import { split, HttpLink } from '@apollo/client';
-import { getMainDefinition } from '@apollo/client/utilities';
-import { StoreContextProvider } from './store/store';
+import { ApolloClient, InMemoryCache, ApolloProvider } from "@apollo/client";
+import { WebSocketLink } from "@apollo/client/link/ws";
+import { split, HttpLink } from "@apollo/client";
+import { getMainDefinition } from "@apollo/client/utilities";
+import { StoreContextProvider } from "./store/store";
 
-import { Auth0Provider } from '@auth0/auth0-react';
+import { Auth0Provider } from "@auth0/auth0-react";
 
-import { ThemeProvider } from 'styled-components';
-import { theme } from './theme/theme';
+import { ThemeProvider } from "styled-components";
+import { theme } from "./theme/theme";
 
 const httpLink = new HttpLink({
-  uri: 'https://upright-liger-61.hasura.app/v1/graphql',
+  uri: "https://upright-liger-61.hasura.app/v1/graphql",
 });
 
 const wsLink = new WebSocketLink({
-  uri: `ws://upright-liger-61.hasura.app/v1/graphql`,
+  uri: `wss://upright-liger-61.hasura.app/v1/graphql`,
   options: {
     reconnect: true,
   },
@@ -27,8 +27,8 @@ const link = split(
   ({ query }) => {
     const definition = getMainDefinition(query);
     return (
-      definition.kind === 'OperationDefinition' &&
-      definition.operation === 'subscription'
+      definition.kind === "OperationDefinition" &&
+      definition.operation === "subscription"
     );
   },
   wsLink,
