@@ -1,14 +1,14 @@
-import * as React from 'react';
-import styled from 'styled-components';
-import { Modal } from '../../Modal/Modal.component';
-import { Input } from '../../../styles/Input.styles';
-import { CloseButton, SubmitButton, Form } from '../../../styles/ModalButtons';
-import { allUsersQuery, checkMembership } from '../../../data/queries';
-import { StoreContext, Actions } from '../../../store/store';
-import { DataItem } from '../../../styles/DataModal.styles';
-import { debounce, random } from 'lodash';
-import { useQuery, ApolloClient, useMutation } from '@apollo/client';
-import { createDMChannel } from '../../../data/mutations';
+import * as React from "react";
+import styled from "styled-components";
+import { Modal } from "../../Modal/Modal.component";
+import { Input } from "../../../styles/Input.styles";
+import { CloseButton, SubmitButton, Form } from "../../../styles/ModalButtons";
+import { allUsersQuery, checkMembership } from "../../../data/queries";
+import { StoreContext, Actions } from "../../../store/store";
+import { DataItem } from "../../../styles/DataModal.styles";
+import { debounce, random } from "lodash";
+import { useQuery, ApolloClient, useMutation } from "@apollo/client";
+import { createDMChannel } from "../../../data/mutations";
 
 interface User {
   username: string;
@@ -17,11 +17,11 @@ interface User {
 }
 
 const colors = [
-  'RebeccaPurple',
-  'Teal',
-  'MediumPurple',
-  'Navy',
-  'MediumSeaGreen',
+  "RebeccaPurple",
+  "Teal",
+  "MediumPurple",
+  "Navy",
+  "MediumSeaGreen",
 ];
 
 const UserTag = styled.div`
@@ -43,7 +43,7 @@ const DataContainer = styled.div`
 `;
 
 const UserDeleteTag = styled.span.attrs({
-  role: 'button',
+  role: "button",
 })`
   color: white;
   font-size: 1.2rem;
@@ -64,24 +64,24 @@ export function JoinDmComponent(props: Props) {
   const [selectedUsers, setSelectedUser] = React.useState<User[]>([]);
 
   const { loading, error, data: dataUsers, refetch } = useQuery(allUsersQuery, {
-    variables: { currentUserId: userData!.sub, filter: '%' },
+    variables: { currentUserId: userData!.sub, filter: "%" },
   });
 
-  const {
-    loading: loadingCheckMembership,
-    error: errorCheckMembership,
-    data: dataCheckMembership,
-  } = useQuery(
-    checkMembership([userData!.sub, ...selectedUsers.map((user) => user.id)])
-  );
+  // const {
+  //   loading: loadingCheckMembership,
+  //   error: errorCheckMembership,
+  //   data: dataCheckMembership,
+  // } = useQuery(
+  //   checkMembership([userData!.sub, ...selectedUsers.map((user) => user.id)])
+  // );
 
   const [createDMChannelFn, { data: dataDMChannel }] = useMutation(
     createDMChannel([userData!.sub, ...selectedUsers.map((user) => user.id)]),
     {
       variables: {
-        title: `${userData!.sub}-${selectedUsers
-          .map((user) => user.id)
-          .join('-')}`,
+        title: `${userData!.name}-${selectedUsers
+          .map((user) => user!.username)
+          .join("-")}`,
       },
       onCompleted() {
         props.exitCallback();
@@ -89,7 +89,7 @@ export function JoinDmComponent(props: Props) {
     }
   );
 
-  console.log(selectedUsers, dataCheckMembership);
+  console.log(selectedUsers);
 
   const onChangeInputValue = (e: React.ChangeEvent<HTMLInputElement>) => {
     e.persist();
@@ -105,8 +105,6 @@ export function JoinDmComponent(props: Props) {
   function setMembership(users: User[]) {
     createDMChannelFn();
   }
-
-  console.log(dataCheckMembership);
 
   return (
     <Modal close={props.exitCallback} title="Direct Messages">

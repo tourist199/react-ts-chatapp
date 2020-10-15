@@ -4,7 +4,6 @@ import Channels, { Channel } from "./Channels";
 import { DirectMessages } from "./DirectMessage";
 import { gql, useSubscription } from "@apollo/client";
 import { StoreContext, Actions, UserData } from "../store/store";
-import { useAuth0 } from "@auth0/auth0-react";
 
 const membershipSubcription = gql`
   subscription membershipSubcription($userId: String!) {

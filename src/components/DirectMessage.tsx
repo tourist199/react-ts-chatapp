@@ -1,11 +1,11 @@
-import * as React from 'react';
-import styled from 'styled-components';
-import { Status } from './SideBar';
-import { Channel, Membership } from './Channels';
-import { Actions, StoreContext } from '../store/store';
-import { JoinDmComponent } from './Sidebar/DMs/JoinDm.component';
-import Loader from 'react-loader-spinner';
-import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css';
+import * as React from "react";
+import styled from "styled-components";
+import { Status } from "./SideBar";
+import { Channel, Membership } from "./Channels";
+import { Actions, StoreContext } from "../store/store";
+import { JoinDmComponent } from "./Sidebar/DMs/JoinDm.component";
+import Loader from "react-loader-spinner";
+import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
 
 const MessagesTitles = styled.div`
   margin: 2rem 0 1rem;
@@ -68,16 +68,6 @@ export function DirectMessages({ channels, loading }: DirectMessageProps) {
     dispatch({ type: Actions.SELECTED_CHANNEL, payload: channel });
   };
 
-  function DMTitles(channel: Channel) {
-    return channel.Memberships.reduce((acc, value: Membership) => {
-      if (value.userId !== user) {
-        return [...acc, value.userId];
-      }
-      return acc;
-    }, [] as string[]).join(' - ');
-  }
-  console.log(channels);
-
   return (
     <>
       {isJoinDM ? (
@@ -107,12 +97,12 @@ export function DirectMessages({ channels, loading }: DirectMessageProps) {
               channel.Memberships.length !== 2 ? (
                 <FlexBox>
                   <MembersCount>{channel.Memberships.length}</MembersCount>
-                  {DMTitles(channel)}
+                  {channel.name}
                 </FlexBox>
               ) : (
                 <>
                   <Status />
-                  {DMTitles(channel)}
+                  {channel.name}
                 </>
               )}
             </Item>
