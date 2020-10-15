@@ -1,7 +1,7 @@
-import React, { useContext } from 'react';
-import styled from 'styled-components';
-import { StoreContext, Actions, UserData } from '../../store/store';
-import { useAuth0 } from '@auth0/auth0-react';
+import React, { useContext } from "react";
+import styled from "styled-components";
+import { StoreContext, Actions, UserData } from "../../store/store";
+import { useAuth0 } from "@auth0/auth0-react";
 
 const Container = styled.div`
   height: 100vh;
@@ -9,8 +9,8 @@ const Container = styled.div`
   flex-direction: column;
   justify-content: space-between;
   background-color: rgb(25, 118, 210);
-  color: 'white';
-  font-family: 'Roboto', 'Helvetica', 'Arial', sans-serif;
+  color: "white";
+  font-family: "Roboto", "Helvetica", "Arial", sans-serif;
 `;
 
 const Footer = styled.p`
@@ -56,6 +56,8 @@ export default function Login() {
     dispatch({ type: Actions.UPDATE_IS_AUTH, payload: _isAuth });
   };
   React.useEffect(() => {
+    console.log(isAuthenticated, userAuth0);
+
     if (isAuthenticated && userAuth0) {
       updateIsAuth(true);
       updateUserData(userAuth0);
@@ -63,14 +65,14 @@ export default function Login() {
   }, [isAuthenticated, userData]);
   return (
     <Container>
-      <Main style={{ flexGrow: 999, width: '100%' }}>
-        <div style={{ textAlign: 'center', paddingBottom: '100px' }}>
+      <Main style={{ flexGrow: 999, width: "100%" }}>
+        <div style={{ textAlign: "center", paddingBottom: "100px" }}>
           <svg
             focusable="false"
             viewBox="0 0 24 20"
             aria-hidden="true"
             role="presentation"
-            style={{ width: '128px', height: '128px' }}
+            style={{ width: "128px", height: "128px" }}
           >
             <g>
               <g>
@@ -107,29 +109,29 @@ export default function Login() {
           </svg>
           <p
             style={{
-              color: 'white',
-              fontFamily: 'Pacifico',
-              fontSize: '30px',
-              lineHeight: '30px',
-              textAlign: 'center',
-              width: '100%',
-              marginTop: '20px',
+              color: "white",
+              fontFamily: "Pacifico",
+              fontSize: "30px",
+              lineHeight: "30px",
+              textAlign: "center",
+              width: "100%",
+              marginTop: "20px",
             }}
           >
             Chat với người quen =))
           </p>
         </div>
-        <div style={{ textAlign: 'center', width: '100%' }}>
+        <div style={{ textAlign: "center", width: "100%" }}>
           <ButtonLogin onClick={() => loginWithRedirect()}>
             Vào chat thôi !
           </ButtonLogin>
 
           <p
             style={{
-              color: 'white',
-              fontSize: '14px',
-              padding: '10px',
-              marginTop: '20px',
+              color: "white",
+              fontSize: "14px",
+              padding: "10px",
+              marginTop: "20px",
             }}
           >
             Mọi thông tin cá nhân được bảo vệ

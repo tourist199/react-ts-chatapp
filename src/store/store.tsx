@@ -1,10 +1,10 @@
-import * as React from 'react';
+import * as React from "react";
 
 export enum Actions {
-  'SELECTED_CHANNEL',
-  'USER',
-  'USER_DATA',
-  'UPDATE_IS_AUTH',
+  "SELECTED_CHANNEL",
+  "USER",
+  "USER_DATA",
+  "UPDATE_IS_AUTH",
 }
 
 export interface UserData {
@@ -31,34 +31,34 @@ interface Context extends State {
   dispatch: (action: Action, payload?: any) => void;
 }
 
-const initialChannel = localStorage.getItem('selected_channel')
-  ? JSON.parse(localStorage.getItem('selected_channel')!)
+const initialChannel = localStorage.getItem("selected_channel")
+  ? JSON.parse(localStorage.getItem("selected_channel")!)
   : {
-      id: '607c38e6-69ce-4468-9877-acd3021cb84a',
-      name: 'user1-user2',
-      members: 999,
+      id: "5019addd-6146-42ee-aef3-3d80e0d7010b",
+      name: "general",
+      members: 7,
     };
 
 const initialUserData =
-  localStorage.getItem('userData') &&
-  localStorage.getItem('userData') != 'undefined'
-    ? JSON.parse(localStorage.getItem('userData')!)
+  localStorage.getItem("userData") &&
+  localStorage.getItem("userData") != "undefined"
+    ? JSON.parse(localStorage.getItem("userData")!)
     : null;
 
 const initialStoreValue = {
   selectedChannel: initialChannel,
-  user: localStorage.getItem('current_user') || '',
+  user: localStorage.getItem("current_user") || "",
   userData: initialUserData,
   isAuth:
-    localStorage.getItem('isAuthenticated') &&
-    localStorage.getItem('isAuthenticated') !== 'false'
+    localStorage.getItem("isAuthenticated") &&
+    localStorage.getItem("isAuthenticated") !== "false"
       ? true
       : false,
 };
 
 export const StoreContext = React.createContext<Context>({
   ...initialStoreValue,
-  dispatch: () => 'test',
+  dispatch: () => "test",
 });
 
 type SelectedChannelAction = {
@@ -101,17 +101,17 @@ export function StoreContextProvider(props: Props) {
   const [store, dispatch] = React.useReducer(storeReducer, initialStoreValue);
   React.useEffect(() => {
     localStorage.setItem(
-      'selected_channel',
+      "selected_channel",
       JSON.stringify(store.selectedChannel)
     );
   }, [store.selectedChannel]);
 
   React.useEffect(() => {
-    localStorage.setItem('userData', JSON.stringify(store.userData));
+    localStorage.setItem("userData", JSON.stringify(store.userData));
   }, [store.userData]);
 
   React.useEffect(() => {
-    localStorage.setItem('isAuthenticated', JSON.stringify(store.isAuth));
+    localStorage.setItem("isAuthenticated", JSON.stringify(store.isAuth));
   }, [store.isAuth]);
 
   return (

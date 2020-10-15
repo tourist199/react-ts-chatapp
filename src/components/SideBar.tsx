@@ -1,10 +1,10 @@
-import React, { useContext } from 'react';
-import styled from 'styled-components';
-import Channels, { Channel } from './Channels';
-import { DirectMessages } from './DirectMessage';
-import { gql, useSubscription } from '@apollo/client';
-import { StoreContext, Actions, UserData } from '../store/store';
-import { useAuth0 } from '@auth0/auth0-react';
+import React, { useContext } from "react";
+import styled from "styled-components";
+import Channels, { Channel } from "./Channels";
+import { DirectMessages } from "./DirectMessage";
+import { gql, useSubscription } from "@apollo/client";
+import { StoreContext, Actions, UserData } from "../store/store";
+import { useAuth0 } from "@auth0/auth0-react";
 
 const membershipSubcription = gql`
   subscription membershipSubcription($userId: String!) {
@@ -70,40 +70,19 @@ interface Membership {
 
 export default function SideBar() {
   // const [channels, setChannels] = useState<Channel[]>([]);
-  const { userData, isAuth, dispatch } = useContext(StoreContext);
-  const {
-    loginWithRedirect,
-    user: userAuth0,
-    isAuthenticated,
-    isLoading,
-  } = useAuth0();
-
-  const updateUserData = (userData: UserData) => {
-    dispatch({ type: Actions.USER_DATA, payload: userData });
-  };
-
-  const updateIsAuth = (_isAuth: boolean) => {
-    dispatch({ type: Actions.UPDATE_IS_AUTH, payload: _isAuth });
-  };
+  const { userData, dispatch } = useContext(StoreContext);
 
   const { loading, error, data } = useSubscription(membershipSubcription, {
-    variables: { userId: userData && userData.sub ? userData.sub : 'user1' },
+    variables: { userId: userData && userData.sub ? userData.sub : "user1" },
   });
 
-  React.useEffect(() => {
-    if (isAuthenticated && userAuth0) {
-      updateIsAuth(true);
-      updateUserData(userAuth0);
-    }
-  }, [isAuthenticated, userData]);
-
-  return isAuth ? (
+  return (
     <SideBarContainer>
       <div>
         <div
           style={{
-            display: 'flex',
-            justifyContent: 'center',
+            display: "flex",
+            justifyContent: "center",
           }}
         >
           <img
@@ -111,7 +90,7 @@ export default function SideBar() {
             alt={userData!.name}
             height={60}
             width={60}
-            style={{ borderRadius: '100%' }}
+            style={{ borderRadius: "100%" }}
           />
         </div>
 
@@ -153,11 +132,6 @@ export default function SideBar() {
           }
         />
       </>
-    </SideBarContainer>
-  ) : (
-    <SideBarContainer>
-      <button onClick={() => loginWithRedirect()}>Log In</button>
-      <div>Loading ...</div>
     </SideBarContainer>
   );
 }

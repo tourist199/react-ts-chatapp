@@ -1,9 +1,9 @@
-import React, { useContext } from 'react';
-import styled from 'styled-components';
-import SideBar from './SideBar';
-import MainContent from './MainContain';
-import { StoreContext } from '../store/store';
-import Login from './Login';
+import React, { useContext } from "react";
+import styled from "styled-components";
+import SideBar from "./SideBar";
+import MainContent from "./MainContain";
+import { StoreContext } from "../store/store";
+import Login from "./Login";
 
 const Container = styled.div`
   display: grid;
@@ -14,6 +14,7 @@ const Container = styled.div`
 
 export default function Layout() {
   const { isAuth } = useContext(StoreContext);
+
   return isAuth ? (
     <Container>
       <SideBar />
