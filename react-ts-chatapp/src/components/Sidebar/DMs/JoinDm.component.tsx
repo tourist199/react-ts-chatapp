@@ -87,17 +87,17 @@ export function JoinDmComponent(props: Props) {
     fetchData(e);
   };
   const fetchData = debounce((e: React.ChangeEvent<HTMLInputElement>) => {
-    (refetch as any).current({
+    refetch({
       currentUserId: userData!.sub,
       filter: `%${e.target.value}%`,
     });
   }, 300);
 
   function setMembership(users: User[]) {
-    if (dataCheckMembership && dataCheckMembership.length > 0) {
-      createDMChannelFn();
-    }
+    createDMChannelFn();
   }
+
+  console.log(dataCheckMembership);
 
   return (
     <Modal close={props.exitCallback} title="Direct Messages">

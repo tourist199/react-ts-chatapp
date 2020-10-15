@@ -35,7 +35,7 @@ export function useWhyDidYouUpdate(name: string, props: any) {
 }
 
 export function createMembershipTemplateQuery(ids: string[]) {
-  return ids.map((id) => `Memberships: {userId: {_eq: "${id}"}}}`);
+  return ids.map((id) => `{Memberships: {userId: {_eq: "${id}"}}}`);
 }
 
 export function createMembershipTemplateMutation(ids: string[]) {

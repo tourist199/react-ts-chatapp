@@ -49,7 +49,11 @@ const initialStoreValue = {
   selectedChannel: initialChannel,
   user: localStorage.getItem('current_user') || '',
   userData: initialUserData,
-  isAuth: localStorage.getItem('isAuthenticated') ? true : false,
+  isAuth:
+    localStorage.getItem('isAuthenticated') &&
+    localStorage.getItem('isAuthenticated') !== 'false'
+      ? true
+      : false,
 };
 
 export const StoreContext = React.createContext<Context>({
@@ -61,6 +65,7 @@ type SelectedChannelAction = {
   type: Actions.SELECTED_CHANNEL;
   payload: { id: string; name: string; members: number };
 };
+
 type UserAction = { type: Actions.USER; payload: string };
 
 type UserDataAction = { type: Actions.USER_DATA; payload: UserData };
@@ -102,15 +107,15 @@ export function StoreContextProvider(props: Props) {
     console.log(store.selectedChannel);
   }, [store.selectedChannel]);
 
-  React.useEffect(() => {
-    if (!store.user) {
-      const value = prompt('Select a user');
-      if (value) {
-        dispatch({ type: Actions.USER, payload: value });
-        localStorage.setItem('current_user', value);
-      }
-    }
-  }, [store.user]);
+  // React.useEffect(() => {
+  //   if (!store.user) {
+  //     const value = prompt('Select a user');
+  //     if (value) {
+  //       dispatch({ type: Actions.USER, payload: value });
+  //       localStorage.setItem('current_user', value);
+  //     }
+  //   }
+  // }, [store.user]);
 
   React.useEffect(() => {
     localStorage.setItem('userData', JSON.stringify(store.userData));

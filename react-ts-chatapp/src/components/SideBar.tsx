@@ -87,10 +87,10 @@ export default function SideBar() {
   };
 
   const { loading, error, data } = useSubscription(membershipSubcription, {
-    variables: { userId: userData!.sub },
+    variables: { userId: userData && userData.sub ? userData.sub : 'user1' },
   });
 
-  console.log(userData!.sub, data);
+  console.log(userAuth0);
 
   React.useEffect(() => {
     console.log(isAuthenticated, userData);
@@ -99,6 +99,10 @@ export default function SideBar() {
       updateUserData(userAuth0);
     }
   }, [isAuthenticated, userData]);
+
+  console.log(localStorage.getItem('isAuthenticated') !== 'false');
+
+  console.log(isAuth);
 
   return isAuth ? (
     <SideBarContainer>

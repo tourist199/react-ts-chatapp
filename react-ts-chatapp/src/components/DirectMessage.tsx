@@ -29,6 +29,11 @@ const MembersCount = styled.span`
   margin-right: calc(0.4rem - 1px);
   border-radius: 80%;
 `;
+const ListItem = styled.ul`
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+`;
 
 interface DirectMessageProps {
   channels: Channel[];
@@ -65,7 +70,7 @@ export function DirectMessages({ channels }: DirectMessageProps) {
         <h2>Messages</h2>
         <i className="fas fa-plus" onClick={() => setDMModal(true)} />
       </MessagesTitles>
-      <ul>
+      <ListItem>
         {channels.map((channel) => (
           <Item
             onClick={() =>
@@ -77,11 +82,6 @@ export function DirectMessages({ channels }: DirectMessageProps) {
             }
             key={channel.id}
           >
-            {/* {!channel.Memberships || channel.Memberships.length === 2 ? (
-              <Status />
-            ) : (
-              <MembersCount>{channel.Memberships.length - 1}</MembersCount>
-            )} */}
             <MembersCount>
               {channel.Memberships && channel.Memberships.length
                 ? channel.Memberships.length
@@ -90,7 +90,7 @@ export function DirectMessages({ channels }: DirectMessageProps) {
             {DMTitles(channel)}
           </Item>
         ))}
-      </ul>
+      </ListItem>
     </>
   );
 }
