@@ -19,8 +19,8 @@ interface User {
 const colors = [
   'RebeccaPurple',
   'Teal',
-  'Navy',
   'MediumPurple',
+  'Navy',
   'MediumSeaGreen',
 ];
 
