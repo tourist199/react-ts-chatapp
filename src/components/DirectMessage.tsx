@@ -13,6 +13,7 @@ const MessagesTitles = styled.div`
   display: flex;
   justify-content: space-between;
   flex-wrap: wrap;
+  font-weight: bold;
 
   h2 {
     font-size: 1rem;
@@ -26,6 +27,21 @@ const MessagesTitles = styled.div`
 export const Item = styled.li`
   margin: 0.25rem 0;
   cursor: pointer;
+  padding: 5px;
+  border-radius: 5px;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+  cursor: pointer;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.1);
+  }
+
+  &.active {
+    transform: scale(1.005);
+    background: rgba(255, 255, 255, 0.2);
+  }
 `;
 
 const MembersCount = styled.div`
@@ -41,10 +57,30 @@ const MembersCount = styled.div`
   align-items: center;
 `;
 
-const ListItem = styled.ul`
+export const ListItem = styled.ul`
   white-space: nowrap;
-  overflow: hidden;
   text-overflow: ellipsis;
+  overflow-y: auto;
+  max-height: calc((100vh - 430px) / 2);
+  min-height: calc((100vh - 600px) / 2);
+
+  &::-webkit-scrollbar {
+    width: 4px;
+  }
+  &:hover:-webkit-scrollbar {
+    width: 10px;
+  }
+
+  &::-webkit-scrollbar-track {
+    box-shadow: inset 0 0 5px black;
+    border-radius: 10px;
+    background-color: rgba(255, 255, 255, 0, 1);
+  }
+
+  &::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    background-image: linear-gradient(180deg, #2af598 0%, #009efd 100%);
+  }
 `;
 
 const FlexBox = styled.div`
@@ -57,7 +93,7 @@ interface DirectMessageProps {
 }
 
 export function DirectMessages({ channels, loading }: DirectMessageProps) {
-  const { dispatch, user } = React.useContext(StoreContext);
+  const { dispatch, selectedChannel } = React.useContext(StoreContext);
   const [isJoinDM, setDMModal] = React.useState<boolean>(false);
 
   const selectChannel = (channel: {
@@ -79,7 +115,9 @@ export function DirectMessages({ channels, loading }: DirectMessageProps) {
       </MessagesTitles>
       <ListItem>
         {loading ? (
-          <Loader type="ThreeDots" color="#4b6584" height={50} width={50} />
+          <div style={{ textAlign: "center" }}>
+            <Loader type="ThreeDots" color="#4b6584" height={50} width={50} />
+          </div>
         ) : (
           channels.map((channel) => (
             <Item
@@ -90,6 +128,7 @@ export function DirectMessages({ channels, loading }: DirectMessageProps) {
                   members: channel.Memberships_aggregate.aggregate.count,
                 })
               }
+              className={channel.id == selectedChannel.id ? "active" : ""}
               key={channel.id}
             >
               {channel.Memberships &&

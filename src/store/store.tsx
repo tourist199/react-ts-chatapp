@@ -51,7 +51,7 @@ const initialStoreValue = {
   userData: initialUserData,
   isAuth:
     localStorage.getItem("isAuthenticated") &&
-    localStorage.getItem("isAuthenticated") !== "false"
+    localStorage.getItem("isAuthenticated") === "true"
       ? true
       : false,
 };
@@ -68,7 +68,7 @@ type SelectedChannelAction = {
 
 type UserAction = { type: Actions.USER; payload: string };
 
-type UserDataAction = { type: Actions.USER_DATA; payload: UserData };
+type UserDataAction = { type: Actions.USER_DATA; payload: UserData | null };
 
 type IsAuthAction = { type: Actions.UPDATE_IS_AUTH; payload: boolean };
 
@@ -87,6 +87,8 @@ function storeReducer(state: State, action: Action): State {
     case Actions.USER_DATA:
       return { ...state, userData: action.payload };
     case Actions.UPDATE_IS_AUTH:
+      console.log(action.payload);
+
       return { ...state, isAuth: action.payload };
     default:
       throw new Error();
@@ -111,7 +113,10 @@ export function StoreContextProvider(props: Props) {
   }, [store.userData]);
 
   React.useEffect(() => {
+    // alert(store.isAuth);
+    // debugger;
     localStorage.setItem("isAuthenticated", JSON.stringify(store.isAuth));
+    if (!store.isAuth) localStorage.removeItem("isAuthenticated");
   }, [store.isAuth]);
 
   return (

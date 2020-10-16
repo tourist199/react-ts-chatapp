@@ -1,14 +1,14 @@
-import * as React from 'react';
-import { Modal } from '../../Modal/Modal.component';
-import { Form } from '../../../styles/ModalButtons';
-import { allChannelsQuery } from '../../../data/queries';
-import styled from 'styled-components';
-import { Input } from '../../../styles/Input.styles';
-import { debounce } from 'lodash';
-import { StoreContext, Actions } from '../../../store/store';
-import { joinChannel } from '../../../data/mutations';
-import { useMutation, useQuery } from '@apollo/client';
-import { Channel } from '../../../components/Channels';
+import * as React from "react";
+import { Modal } from "../../Modal/Modal.component";
+import { Form } from "../../../styles/ModalButtons";
+import { allChannelsQuery } from "../../../data/queries";
+import styled from "styled-components";
+import { Input } from "../../../styles/Input.styles";
+import { debounce } from "lodash";
+import { StoreContext, Actions } from "../../../store/store";
+import { joinChannel } from "../../../data/mutations";
+import { useMutation, useQuery } from "@apollo/client";
+import { Channel } from "../../../components/Channels";
 
 interface Props {
   exitCallback: () => void;
@@ -50,7 +50,7 @@ export function JoinChannel(props: Props) {
   const { loading, error, data: dataAllChannels, refetch } = useQuery(
     allChannelsQuery,
     {
-      variables: { channelName: '%%' },
+      variables: { channelName: "%%" },
     }
   );
 
@@ -103,6 +103,7 @@ export function JoinChannel(props: Props) {
             id="channelName"
             placeholder="Search channels"
             onChange={filterChannels}
+            autoComplete="off"
           />
         </Form>
 

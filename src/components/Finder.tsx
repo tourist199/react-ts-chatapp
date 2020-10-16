@@ -1,8 +1,8 @@
-import React, { useContext } from 'react';
-import { StoreContext } from '../store/store';
-import styled from 'styled-components';
-import { useMutation } from '@apollo/client';
-import { CreateChannelMutation, CreateMembership } from '../data/mutations';
+import React, { useContext } from "react";
+import { StoreContext } from "../store/store";
+import styled from "styled-components";
+import { useMutation } from "@apollo/client";
+import { CreateChannelMutation, CreateMembership } from "../data/mutations";
 
 interface Props {
   exitCallback: () => void;
@@ -98,7 +98,12 @@ export function Finder(props: Props) {
         }}
       >
         <label htmlFor="channelName">Name</label>
-        <input name="channelName" id="channelName" placeholder="eg leads" />
+        <input
+          name="channelName"
+          id="channelName"
+          placeholder="eg leads"
+          autoComplete="off"
+        />
         <button onClick={props.exitCallback}>Cancel</button>
         <button type="submit">Create</button>
       </Form>

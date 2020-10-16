@@ -67,14 +67,6 @@ export function JoinDmComponent(props: Props) {
     variables: { currentUserId: userData!.sub, filter: "%" },
   });
 
-  // const {
-  //   loading: loadingCheckMembership,
-  //   error: errorCheckMembership,
-  //   data: dataCheckMembership,
-  // } = useQuery(
-  //   checkMembership([userData!.sub, ...selectedUsers.map((user) => user.id)])
-  // );
-
   const [createDMChannelFn, { data: dataDMChannel }] = useMutation(
     createDMChannel([userData!.sub, ...selectedUsers.map((user) => user.id)]),
     {
@@ -122,6 +114,7 @@ export function JoinDmComponent(props: Props) {
             id="username"
             placeholder="eg leads"
             onChange={onChangeInputValue}
+            autoComplete="off"
           />
           <CloseButton onClick={props.exitCallback}>Cancel</CloseButton>
           <SubmitButton type="submit">Join DM</SubmitButton>

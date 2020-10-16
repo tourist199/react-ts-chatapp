@@ -1,10 +1,12 @@
-import React, { useEffect, useState, useContext } from 'react';
-import styled from 'styled-components';
-import { gql, useSubscription } from '@apollo/client';
-import { StoreContext } from '../store/store';
-import { messageSubscription } from '../data/subscriptions';
-import Loader from 'react-loader-spinner';
-import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css';
+import React, { useEffect, useState, useContext } from "react";
+import { isToday, isYesterday } from "date-fns";
+import styled from "styled-components";
+import { gql, useSubscription } from "@apollo/client";
+import { StoreContext } from "../store/store";
+import { messageSubscription } from "../data/subscriptions";
+import Loader from "react-loader-spinner";
+import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
+import { groupBy } from "lodash";
 
 const Container = styled.div`
   margin-top: 65px;
@@ -42,6 +44,37 @@ const DateSpan = styled.span`
   color: darkgray;
 `;
 
+const DateHeader = styled.div`
+  display: block;
+  height: 25px;
+  position: relative;
+
+  .line {
+    border-bottom: 1px solid grey;
+    position: absolute;
+    top: 8px;
+    height: 5px;
+    z-index: 1;
+    width: 100%;
+  }
+
+  .content {
+    position: relative;
+    border-radius: 15px;
+    height: 25px;
+    text-align: center;
+    width: 200px;
+    margin: 0 auto;
+    border-radius: 10px;
+    background: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10;
+    border: 1px solid grey;
+    font-weight: 600;
+  }
+`;
 interface Message {
   id: string;
   body: string;
@@ -66,46 +99,96 @@ export function MessageBox() {
       setMessages(Message as Message[]);
     }
   });
-  console.log(messages);
+
+  const options = {
+    year: "numeric",
+    month: "numeric",
+    day: "numeric",
+    hour: "numeric",
+    minute: "numeric",
+    second: "numeric",
+    hour12: false,
+    timeZone: "Asia/Ho_Chi_Minh",
+  };
+
+  let df = new Intl.DateTimeFormat(
+    navigator.languages ? navigator.languages[0] : "en-US",
+    {
+      year: "numeric",
+      month: "numeric",
+      day: "numeric",
+      hour: "numeric",
+      minute: "numeric",
+    }
+  );
+  let dates: any;
+
+  if (messages) {
+    const dtf = new Intl.DateTimeFormat(
+      navigator.languages ? navigator.languages[0] : "en-US"
+    );
+    dates = groupBy(messages, (message: any) =>
+      dtf.format(new Date(message.date))
+    );
+  }
+  console.log(dates, Object.keys(dates));
+  const rtf = new (Intl as any).RelativeTimeFormat(
+    navigator.languages ? navigator.languages[0] : "en-US",
+    { numeric: "auto" }
+  );
 
   return (
     <Container>
       {loading ? (
         <div
           style={{
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-            height: '100%',
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            height: "100%",
           }}
         >
-          <Loader
-            type="Circles"
-            color="#a29bfe"
-            height={80}
-            width={80}
-            timeout={3000} //3 secs
-          />
+          <Loader type="Circles" color="#a29bfe" height={80} width={80} />
         </div>
       ) : null}
       <ul>
-        {messages
-          ? (messages as Message[]).map((msg, index) => (
-              <li key={index}>
-                <div className="avt-box">
-                  <img src={msg.User.picture} alt={msg.User.username} />
+        {Object.keys(dates).map((key) => {
+          console.log(dates[key]);
+          return (
+            <div key={key}>
+              <DateHeader>
+                <div className="line"></div>
+                <div className="content">
+                  {isToday(new Date(dates[key][0].date))
+                    ? rtf.format(0, "day")
+                    : isYesterday(new Date(dates[key][0].date))
+                    ? rtf.format(-1, "day")
+                    : key}
                 </div>
-                <div>
-                  <Username>{msg.User.username}</Username>
-                  <DateSpan>
-                    {/* {new Intl.DateTimeFormat('en-GB').format(new Date(msg.date))} */}
-                    {msg.date}
-                  </DateSpan>
-                  <p>{msg.body}</p>
-                </div>
-              </li>
-            ))
-          : null}
+              </DateHeader>
+              {dates[key].map((msg: any, index: number) => {
+                return (
+                  <>
+                    <li key={index}>
+                      <div className="avt-box">
+                        <img src={msg.User.picture} alt={msg.User.username} />
+                      </div>
+                      <div>
+                        <Username>{msg.User.username}</Username>
+                        <DateSpan>
+                          {new Intl.DateTimeFormat("en-AU", options).format(
+                            new Date(msg.date)
+                          )}
+                        </DateSpan>
+                        <p>{msg.body}</p>
+                      </div>
+                    </li>
+                  </>
+                );
+              })}
+            </div>
+          );
+        })}
       </ul>
     </Container>
   );

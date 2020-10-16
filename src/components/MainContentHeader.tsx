@@ -1,6 +1,6 @@
-import React, { useContext } from 'react';
-import styled from 'styled-components';
-import { StoreContext } from '../store/store';
+import React, { useContext } from "react";
+import styled from "styled-components";
+import { StoreContext } from "../store/store";
 
 const Container = styled.div`
   position: fixed;
@@ -58,12 +58,12 @@ export default function MainContentHeader() {
         <div>
           <i className="far fa-user" />
           {selectedChannel ? selectedChannel.members : 0} member
-          {selectedChannel && selectedChannel.members > 1 && 's'}
+          {selectedChannel && selectedChannel.members > 1 && "s"}
         </div>
       </Title>
 
       <div>
-        <Input type="text" placeholder="search" />
+        <Input type="text" autoComplete="off" placeholder="search" />
       </div>
     </Container>
   );

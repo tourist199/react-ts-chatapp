@@ -56,13 +56,13 @@ export default function Login() {
     dispatch({ type: Actions.UPDATE_IS_AUTH, payload: _isAuth });
   };
   React.useEffect(() => {
-    console.log(isAuthenticated, userAuth0);
+    console.log(isAuth, userAuth0, isAuthenticated);
 
-    if (isAuthenticated && userAuth0) {
+    if (userAuth0 && isAuthenticated) {
       updateIsAuth(true);
       updateUserData(userAuth0);
     }
-  }, [isAuthenticated, userData]);
+  }, [isAuthenticated]);
   return (
     <Container>
       <Main style={{ flexGrow: 999, width: "100%" }}>

@@ -1,13 +1,13 @@
-import * as React from 'react';
-import { StoreContext } from '../../../store/store';
-import styled from 'styled-components';
+import * as React from "react";
+import { StoreContext } from "../../../store/store";
+import styled from "styled-components";
 import {
   CreateChannelMutation,
   CreateMembership,
-} from '../../../data/mutations';
-import { Modal } from '../../Modal/Modal.component';
-import { Input } from '../../../styles/Input.styles';
-import { useMutation } from '@apollo/client';
+} from "../../../data/mutations";
+import { Modal } from "../../Modal/Modal.component";
+import { Input } from "../../../styles/Input.styles";
+import { useMutation } from "@apollo/client";
 
 interface Props {
   exitCallback: () => void;
@@ -61,7 +61,7 @@ const Form = styled.form`
 
 export function Finder(props: Props) {
   const { userData } = React.useContext(StoreContext);
-  const [inputValue, setInputValue] = React.useState<string>('');
+  const [inputValue, setInputValue] = React.useState<string>("");
   const [createMembership, { data: dataMembership }] = useMutation(
     CreateMembership
   );
@@ -98,9 +98,10 @@ export function Finder(props: Props) {
           id="channelName"
           placeholder="eg leads"
           onChange={onChangeInputValue}
+          autoComplete="off"
         />
         <CloseButton onClick={props.exitCallback}>Cancel</CloseButton>
-        <SubmitButton disabled={inputValue === ''} type="submit">
+        <SubmitButton disabled={inputValue === ""} type="submit">
           Create
         </SubmitButton>
       </Form>

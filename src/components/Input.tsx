@@ -1,7 +1,14 @@
-import * as React from 'react';
-import styled from 'styled-components';
-import { gql, useMutation } from '@apollo/client';
-import { StoreContext } from '../store/store';
+import * as React from "react";
+import styled from "styled-components";
+import { gql, useMutation } from "@apollo/client";
+import { StoreContext } from "../store/store";
+
+import { MentionsInput, Mention } from "react-mentions";
+import { EditorState, convertToRaw } from "draft-js";
+import Editor from "draft-js-plugins-editor";
+// import createMentionPlugin, {
+//   defaultSuggestionsFilter,
+// } from "draft-js-mention-plugin";
 
 const SubmitButton = styled.button`
   outline: none;
@@ -51,8 +58,42 @@ const submitMessageMutation = gql`
     }
   }
 `;
-
+const users = [
+  {
+    id: "walter",
+    display: "Walter White",
+  },
+  {
+    id: "jesse",
+    display: "Jesse Pinkman",
+  },
+  {
+    id: "gus",
+    display: 'Gustavo "Gus" Fring',
+  },
+  {
+    id: "saul",
+    display: "Saul Goodman",
+  },
+  {
+    id: "hank",
+    display: "Hank Schrader",
+  },
+  {
+    id: "skyler",
+    display: "Skyler White",
+  },
+  {
+    id: "mike",
+    display: "Mike Ehrmantraut",
+  },
+  {
+    id: "lydia",
+    display: "Lydìã Rôdarté-Qüayle",
+  },
+];
 export function InputMessage() {
+  const [valueMention, setValueMention] = React.useState();
   const [submitMessage, { data }] = useMutation(submitMessageMutation);
   const { selectedChannel, userData } = React.useContext(StoreContext);
 
@@ -71,11 +112,35 @@ export function InputMessage() {
   };
 
   return (
-    <form onSubmit={onHandleSubmit}>
-      <InputStyle name="message" type="text" placeholder="Message John Doe" />
-      <SubmitButton type="submit">
-        <i className="fas fa-arrow-alt-circle-right" />
-      </SubmitButton>
-    </form>
+    <>
+      <form onSubmit={onHandleSubmit}>
+        <InputStyle
+          name="message"
+          type="text"
+          autoComplete="off"
+          placeholder="Message ..."
+        />
+        <SubmitButton type="submit">
+          <i className="fas fa-arrow-alt-circle-right" />
+        </SubmitButton>
+      </form>
+      {/* <MentionsInput
+        value={valueMention}
+        onChange={(e: any) => setValueMention(e!.target!.value)}
+      >
+        <Mention
+          trigger="@"
+          data={users}
+          renderSuggestion={(data: any) => {
+            console.log(data);
+          }}
+        />
+        <Mention
+          trigger="#"
+          data={this.requestTag}
+          renderSuggestion={this.renderTagSuggestion}
+        />
+      </MentionsInput> */}
+    </>
   );
 }

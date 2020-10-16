@@ -1,8 +1,8 @@
-import React from 'react';
-import styled from 'styled-components';
-import MainContentHeader from './MainContentHeader';
-import { MessageBox } from './MessageBox';
-import { InputMessage } from './Input';
+import React from "react";
+import styled from "styled-components";
+import MainContentHeader from "./MainContentHeader";
+import { MessageBox } from "./MessageBox";
+import { InputMessage } from "./Input";
 
 const Container = styled.div`
   padding: 1rem;
