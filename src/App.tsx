@@ -13,11 +13,11 @@ import { ThemeProvider } from "styled-components";
 import { theme } from "./theme/theme";
 
 const httpLink = new HttpLink({
-  uri: "https://upright-liger-61.hasura.app/v1/graphql",
+  uri: "https://tops-kiwi-50.hasura.app/v1/graphql",
 });
 
 const wsLink = new WebSocketLink({
-  uri: `wss://upright-liger-61.hasura.app/v1/graphql`,
+  uri: `wss://tops-kiwi-50.hasura.app/v1/graphql`,
   options: {
     reconnect: true,
   },

@@ -5,7 +5,6 @@ import { DirectMessages } from "./DirectMessage";
 import { gql, useSubscription } from "@apollo/client";
 import { StoreContext, Actions, UserData } from "../store/store";
 import { useAuth0 } from "@auth0/auth0-react";
-import { setInterval } from "timers";
 
 const membershipSubcription = gql`
   subscription membershipSubcription($userId: String!) {
@@ -13,7 +12,11 @@ const membershipSubcription = gql`
       id
       name
       Memberships {
-        userId
+        User {
+          id
+          name
+          picture
+        }
         direct
         id
       }

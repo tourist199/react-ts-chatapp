@@ -100,6 +100,7 @@ export function DirectMessages({ channels, loading }: DirectMessageProps) {
     id: string;
     name: string;
     members: number;
+    memberships: any[];
   }) => {
     dispatch({ type: Actions.SELECTED_CHANNEL, payload: channel });
   };
@@ -126,6 +127,7 @@ export function DirectMessages({ channels, loading }: DirectMessageProps) {
                   id: channel.id,
                   name: channel.name,
                   members: channel.Memberships_aggregate.aggregate.count,
+                  memberships: channel.Memberships,
                 })
               }
               className={channel.id == selectedChannel.id ? "active" : ""}

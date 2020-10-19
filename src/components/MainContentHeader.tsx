@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import styled from "styled-components";
 import { StoreContext } from "../store/store";
 
@@ -48,17 +48,50 @@ const Input = styled.input`
 
 export default function MainContentHeader() {
   const { selectedChannel } = useContext(StoreContext);
+  console.log(selectedChannel);
+  const [displayMember, setDisplayMember] = useState(true);
 
   return (
     <Container>
       <Title>
-        <div>
-          <h3>#{selectedChannel.name}</h3>
+        <div style={{ display: "flex" }}>
+          <h3 style={{ marginRight: "30px" }}>#{selectedChannel.name}</h3>
+          <div>
+            <i className="far fa-plus" />
+            Mời thêm người
+          </div>
         </div>
         <div>
-          <i className="far fa-user" />
-          {selectedChannel ? selectedChannel.members : 0} member
-          {selectedChannel && selectedChannel.members > 1 && "s"}
+          <i
+            className="far fa-user"
+            onClick={() => setDisplayMember(!displayMember)}
+          />
+          {!displayMember ? (
+            <>
+              {selectedChannel ? selectedChannel.members : 0} member
+              {selectedChannel && selectedChannel.members > 1 && "s"}
+            </>
+          ) : (
+            <>
+              {selectedChannel?.memberships.map((usr) => (
+                <div
+                  key={usr.id}
+                  style={{ display: "inline", marginRight: "10px" }}
+                >
+                  <span>
+                    <img
+                      height={20}
+                      width={20}
+                      style={{ borderRadius: "50%" }}
+                      src={usr!.User!.picture}
+                      alt="113213"
+                    />
+                  </span>{" "}
+                  {usr!.User!.name}
+                </div>
+              ))}
+            </>
+          )}
         </div>
       </Title>
 

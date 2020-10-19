@@ -72,7 +72,7 @@ export function JoinChannel(props: Props) {
   };
 
   function selectChannel(
-    channel: { id: string; name: string; members: number },
+    channel: { id: string; name: string; members: number; memberships: any[] },
     memberships: { userId: string }[]
   ) {
     if (memberships.some((membership) => membership.userId === userData!.sub)) {
@@ -85,7 +85,7 @@ export function JoinChannel(props: Props) {
         })
         .then((resp: any) => {
           const channelAffiliation =
-            resp.data.insert_Membership.returning[0].Channel;
+            resp.data.insert_Memberships.returning[0].Channel;
           dispatch({
             type: Actions.SELECTED_CHANNEL,
             payload: channelAffiliation,
@@ -119,6 +119,7 @@ export function JoinChannel(props: Props) {
                         id: channel.id,
                         name: channel.name,
                         members: channel.Memberships_aggregate.aggregate.count,
+                        memberships: channel.Memberships,
                       },
                       channel.Memberships
                     )

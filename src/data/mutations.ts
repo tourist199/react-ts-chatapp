@@ -1,5 +1,5 @@
-import gql from 'graphql-tag';
-import { createMembershipTemplateMutation } from '../utils';
+import gql from "graphql-tag";
+import { createMembershipTemplateMutation } from "../utils";
 
 export const CreateChannelMutation = gql`
   mutation CreateChannel($name: String) {
@@ -13,7 +13,7 @@ export const CreateChannelMutation = gql`
 
 export const CreateMembership = gql`
   mutation CreateMembership($userId: String, $channelId: uuid) {
-    insert_Membership(objects: { userId: $userId, channelId: $channelId }) {
+    insert_Memberships(objects: { userId: $userId, channelId: $channelId }) {
       returning {
         id
       }
@@ -38,7 +38,7 @@ export const submitMessageMutation = gql`
 
 export const joinChannel = gql`
   mutation JoinChannel($userId: String!, $channelId: uuid!) {
-    insert_Membership(
+    insert_Memberships(
       objects: { channelId: $channelId, userId: $userId, direct: false }
     ) {
       returning {
@@ -60,7 +60,7 @@ export const createDMChannel = (userIds: string[]) => gql`
         group: ""
         Memberships: {
           data: [
-            ${createMembershipTemplateMutation(userIds).join(',')}
+            ${createMembershipTemplateMutation(userIds).join(",")}
           ]
         }
       }

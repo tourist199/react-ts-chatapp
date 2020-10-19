@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 
 export enum Actions {
   "SELECTED_CHANNEL",
@@ -20,8 +20,15 @@ export interface UserData {
   updated_at: string;
 }
 
+interface SelectedChannel {
+  id: string;
+  name: string;
+  members: number;
+  memberships: any[];
+}
+
 interface State {
-  selectedChannel: { id: string; name: string; members: number };
+  selectedChannel: SelectedChannel;
   user: string;
   userData: UserData | null;
   isAuth: boolean;
@@ -63,7 +70,7 @@ export const StoreContext = React.createContext<Context>({
 
 type SelectedChannelAction = {
   type: Actions.SELECTED_CHANNEL;
-  payload: { id: string; name: string; members: number };
+  payload: SelectedChannel;
 };
 
 type UserAction = { type: Actions.USER; payload: string };
@@ -113,8 +120,6 @@ export function StoreContextProvider(props: Props) {
   }, [store.userData]);
 
   React.useEffect(() => {
-    // alert(store.isAuth);
-    // debugger;
     localStorage.setItem("isAuthenticated", JSON.stringify(store.isAuth));
     if (!store.isAuth) localStorage.removeItem("isAuthenticated");
   }, [store.isAuth]);

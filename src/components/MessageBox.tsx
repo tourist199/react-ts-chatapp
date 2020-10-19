@@ -131,7 +131,6 @@ export function MessageBox() {
       dtf.format(new Date(message.date))
     );
   }
-  console.log(dates, Object.keys(dates));
   const rtf = new (Intl as any).RelativeTimeFormat(
     navigator.languages ? navigator.languages[0] : "en-US",
     { numeric: "auto" }
@@ -152,10 +151,9 @@ export function MessageBox() {
         </div>
       ) : null}
       <ul>
-        {Object.keys(dates).map((key) => {
-          console.log(dates[key]);
+        {Object.keys(dates).map((key, index) => {
           return (
-            <div key={key}>
+            <div key={index}>
               <DateHeader>
                 <div className="line"></div>
                 <div className="content">

@@ -54,7 +54,7 @@ interface Memberships_aggregate {
 export interface Channel {
   id: string;
   name: string;
-  Memberships: Membership[];
+  Memberships: any[];
   Memberships_aggregate: Memberships_aggregate;
 }
 
@@ -74,9 +74,11 @@ export default function Channels({ channels, loading }: ChanelProps) {
     id: string;
     name: string;
     members: number;
+    memberships: any[];
   }) => {
     dispatch({ type: Actions.SELECTED_CHANNEL, payload: channel });
   };
+  console.log(channels);
 
   return (
     <>
@@ -103,6 +105,7 @@ export default function Channels({ channels, loading }: ChanelProps) {
                     id: channel.id,
                     name: channel.name,
                     members: channel.Memberships_aggregate.aggregate.count || 0,
+                    memberships: channel.Memberships,
                   })
                 }
                 key={channel.id}
