@@ -48,8 +48,8 @@ const Input = styled.input`
 
 export default function MainContentHeader() {
   const { selectedChannel } = useContext(StoreContext);
-  console.log(selectedChannel);
   const [displayMember, setDisplayMember] = useState(true);
+  const [displayInvitePeople, setDisplayInvitePeople] = useState(false);
 
   return (
     <Container>
@@ -94,7 +94,6 @@ export default function MainContentHeader() {
           )}
         </div>
       </Title>
-
       <div>
         <Input type="text" autoComplete="off" placeholder="search" />
       </div>
