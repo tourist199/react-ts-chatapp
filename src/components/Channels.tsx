@@ -78,7 +78,6 @@ export default function Channels({ channels, loading }: ChanelProps) {
   }) => {
     dispatch({ type: Actions.SELECTED_CHANNEL, payload: channel });
   };
-  console.log(channels);
 
   return (
     <>

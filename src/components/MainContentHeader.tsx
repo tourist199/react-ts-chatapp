@@ -1,6 +1,9 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import styled from "styled-components";
-import { StoreContext } from "../store/store";
+import { StoreContext, Actions } from "../store/store";
+import { InvitePeople } from "./Sidebar/InvitePeople";
+import { useSubscription } from "@apollo/client";
+import { channelSelectedSubcription } from "../data/subscriptions";
 
 const Container = styled.div`
   position: fixed;
@@ -47,16 +50,47 @@ const Input = styled.input`
 `;
 
 export default function MainContentHeader() {
-  const { selectedChannel } = useContext(StoreContext);
-  const [displayMember, setDisplayMember] = useState(true);
+  const { selectedChannel, dispatch } = useContext(StoreContext);
+  const [displayMember, setDisplayMember] = useState(false);
   const [displayInvitePeople, setDisplayInvitePeople] = useState(false);
+
+  const { data: dataChannel, loading } = useSubscription(
+    channelSelectedSubcription,
+    {
+      variables: { channelId: selectedChannel.id },
+    }
+  );
+
+  const selectChannelFn = (channel: {
+    id: string;
+    name: string;
+    members: number;
+    memberships: any[];
+  }) => {
+    dispatch({ type: Actions.SELECTED_CHANNEL, payload: channel });
+  };
+
+  // useEffect(() => {
+  //   const channel = {
+  //     id: selectedChannel.id,
+  //     name:
+  //   };
+  //   selectChannelFn(channel);
+  // }, dataChannel);
+  console.log(dataChannel, selectedChannel.id);
 
   return (
     <Container>
       <Title>
+        {displayInvitePeople ? (
+          <InvitePeople exitCallback={() => setDisplayInvitePeople(false)} />
+        ) : null}
         <div style={{ display: "flex" }}>
           <h3 style={{ marginRight: "30px" }}>#{selectedChannel.name}</h3>
-          <div>
+          <div
+            style={{ cursor: "pointer" }}
+            onClick={() => setDisplayInvitePeople(true)}
+          >
             <i className="far fa-plus" />
             Mời thêm người
           </div>
@@ -73,7 +107,7 @@ export default function MainContentHeader() {
             </>
           ) : (
             <>
-              {selectedChannel?.memberships.map((usr) => (
+              {selectedChannel?.memberships?.map((usr) => (
                 <div
                   key={usr.id}
                   style={{ display: "inline", marginRight: "10px" }}

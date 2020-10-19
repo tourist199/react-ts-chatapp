@@ -1,4 +1,4 @@
-import { gql } from '@apollo/client';
+import { gql } from "@apollo/client";
 
 export const messageSubscription = gql`
   subscription MessageSubscription($channelId: uuid) {
@@ -43,6 +43,7 @@ export const allChannelsSubcription = gql`
     }
   }
 `;
+
 export const membershipSubcription = gql`
   subscription SidebarSubcription($user: String) {
     Channel(where: { Memberships: { userId: { _eq: $user } } }) {
@@ -52,6 +53,27 @@ export const membershipSubcription = gql`
         userId
         direct
         id
+      }
+      Memberships_aggregate {
+        aggregate {
+          count
+        }
+      }
+    }
+  }
+`;
+
+export const channelSelectedSubcription = gql`
+  subscription channelSelectedSubcription($channelId: String) {
+    Channel(where: { id: { _eq: $channelId } }) {
+      id
+      name
+      Memberships {
+        User {
+          id
+          name
+          picture
+        }
       }
       Memberships_aggregate {
         aggregate {

@@ -1,4 +1,4 @@
-import { useRef, useEffect } from 'react';
+import { useRef, useEffect } from "react";
 
 export function useWhyDidYouUpdate(name: string, props: any) {
   // Get a mutable ref object where we can store props ...
@@ -25,7 +25,7 @@ export function useWhyDidYouUpdate(name: string, props: any) {
 
       // If changesObj not empty then output to console
       if (Object.keys(changesObj).length) {
-        console.log('[why-did-you-update]', name, changesObj);
+        console.log("[why-did-you-update]", name, changesObj);
       }
     }
 
@@ -40,4 +40,10 @@ export function createMembershipTemplateQuery(ids: string[]) {
 
 export function createMembershipTemplateMutation(ids: string[]) {
   return ids.map((id) => `{ userId: "${id}", direct: true }`);
+}
+
+export function inviteMemberToGroupMutation(ids: string[], channelId: string) {
+  return ids.map(
+    (id) => `{ userId: "${id}", direct: false, channelId: "${channelId}" }`
+  );
 }

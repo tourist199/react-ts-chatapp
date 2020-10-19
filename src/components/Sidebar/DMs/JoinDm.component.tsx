@@ -94,7 +94,7 @@ export function JoinDmComponent(props: Props) {
     });
   }, 300);
 
-  function setMembership(users: User[]) {
+  function setMembership() {
     createDMChannelFn();
   }
 
@@ -104,7 +104,7 @@ export function JoinDmComponent(props: Props) {
         <Form
           onSubmit={(e: any) => {
             e.preventDefault();
-            setMembership(selectedUsers);
+            setMembership();
             e.target.reset();
           }}
         >
