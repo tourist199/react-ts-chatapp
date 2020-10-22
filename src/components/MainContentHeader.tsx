@@ -8,7 +8,7 @@ const Container = styled.div`
   top: 0;
   z-index: 5;
   background-color: white;
-  width: calc(100vw - 240px);
+  width: calc(100vw - 260px);
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;

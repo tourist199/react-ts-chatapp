@@ -7,7 +7,7 @@ import Login from "./Login";
 
 const Container = styled.div`
   display: grid;
-  grid-template-columns: 200px 1fr;
+  grid-template-columns: 220px 1fr;
   width: 100vw;
   height: 100vh;
 `;

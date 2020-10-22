@@ -42,6 +42,14 @@ const SideBarContainer = styled.div`
   overflow: hidden;
 `;
 
+const BtnLogout = styled.button`
+  background-color: rgba(0, 0, 0, 0.1);
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  color: white;
+`;
+
 const Header = styled.header`
   display: grid;
   grid-template-columns: 1fr 25px;
@@ -173,7 +181,10 @@ export default function SideBar() {
           />
         </div>
       </SideContent>
-      <button onClick={() => logOutApp()}>Log Out</button>
+      <BtnLogout onClick={() => logOutApp()}>
+        <i style={{ marginRight: "20px" }} className="fas fa-sign-out" />
+        <b> Logout</b>
+      </BtnLogout>
     </SideBarContainer>
   );
 }

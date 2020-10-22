@@ -16,7 +16,7 @@ export const CreateChannelMutation = gql`
 
 export const CreateMembership = gql`
   mutation CreateMembership($userId: String, $channelId: uuid) {
-    insert_Memberships(objects: { userId: $userId, channelId: $channelId }) {
+    insert_Membership(objects: { userId: $userId, channelId: $channelId }) {
       returning {
         id
       }
@@ -41,7 +41,7 @@ export const submitMessageMutation = gql`
 
 export const joinChannel = gql`
   mutation JoinChannel($userId: String!, $channelId: uuid!) {
-    insert_Memberships(
+    insert_Membership(
       objects: { channelId: $channelId, userId: $userId, direct: false }
     ) {
       returning {
@@ -79,7 +79,7 @@ export const createDMChannel = (userIds: string[]) => gql`
 export const inviteMemberToGroup = (userIds: string[], channelId: string) => {
   return gql`
   mutation inviteMemberToGroup {
-    insert_Memberships(
+    insert_Membership(
       objects: [
         ${inviteMemberToGroupMutation(userIds, channelId).join(",")}
       ]

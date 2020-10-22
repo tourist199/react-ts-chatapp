@@ -41,7 +41,7 @@ const InputStyle = styled.input`
   box-sizing: border-box;
   position: fixed;
   bottom: 10px;
-  width: calc(100vw - 240px);
+  width: calc(100vw - 260px);
 `;
 
 const submitMessageMutation = gql`
