@@ -63,23 +63,23 @@ export const membershipSubcription = gql`
   }
 `;
 
-export const channelSelectedSubcription = gql`
-  subscription channelSelectedSubcription($channelId: String) {
-    Channel(where: { id: { _eq: $channelId } }) {
-      id
-      name
-      Memberships {
-        User {
-          id
-          name
-          picture
-        }
-      }
-      Memberships_aggregate {
-        aggregate {
-          count
-        }
-      }
-    }
-  }
-`;
+// export const channelSelectedSubcription = gql`
+//   subscription channelSelectedSubcription($channelId: String) {
+//     Channel(where: { id: { _eq: $channelId } }) {
+//       id
+//       name
+//       Memberships {
+//         User {
+//           id
+//           name
+//           picture
+//         }
+//       }
+//       Memberships_aggregate {
+//         aggregate {
+//           count
+//         }
+//       }
+//     }
+//   }
+// `;

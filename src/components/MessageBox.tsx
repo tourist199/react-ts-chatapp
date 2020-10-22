@@ -24,6 +24,7 @@ const Container = styled.div`
 
       img {
         height: 50px;
+        width: 50px;
         border-radius: 100%;
       }
     }
@@ -166,22 +167,20 @@ export function MessageBox() {
               </DateHeader>
               {dates[key].map((msg: any, index: number) => {
                 return (
-                  <>
-                    <li key={index}>
-                      <div className="avt-box">
-                        <img src={msg.User.picture} alt={msg.User.username} />
-                      </div>
-                      <div>
-                        <Username>{msg.User.username}</Username>
-                        <DateSpan>
-                          {new Intl.DateTimeFormat("en-AU", options).format(
-                            new Date(msg.date)
-                          )}
-                        </DateSpan>
-                        <p>{msg.body}</p>
-                      </div>
-                    </li>
-                  </>
+                  <li key={index}>
+                    <div className="avt-box">
+                      <img src={msg.User.picture} alt={msg.User.username} />
+                    </div>
+                    <div>
+                      <Username>{msg.User.username}</Username>
+                      <DateSpan>
+                        {new Intl.DateTimeFormat("en-AU", options).format(
+                          new Date(msg.date)
+                        )}
+                      </DateSpan>
+                      <p>{msg.body}</p>
+                    </div>
+                  </li>
                 );
               })}
             </div>

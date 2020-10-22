@@ -5,6 +5,7 @@ export enum Actions {
   "USER",
   "USER_DATA",
   "UPDATE_IS_AUTH",
+  "CHANNELS",
 }
 
 export interface UserData {
@@ -32,6 +33,7 @@ interface State {
   user: string;
   userData: UserData | null;
   isAuth: boolean;
+  channels: any[];
 }
 
 interface Context extends State {
@@ -61,6 +63,7 @@ const initialStoreValue = {
     localStorage.getItem("isAuthenticated") === "true"
       ? true
       : false,
+  channels: [],
 };
 
 export const StoreContext = React.createContext<Context>({
@@ -79,11 +82,14 @@ type UserDataAction = { type: Actions.USER_DATA; payload: UserData | null };
 
 type IsAuthAction = { type: Actions.UPDATE_IS_AUTH; payload: boolean };
 
+type ChannelsAction = { type: Actions.CHANNELS; payload: any[] };
+
 type Action =
   | SelectedChannelAction
   | UserAction
   | UserDataAction
-  | IsAuthAction;
+  | IsAuthAction
+  | ChannelsAction;
 
 function storeReducer(state: State, action: Action): State {
   switch (action.type) {
@@ -94,9 +100,9 @@ function storeReducer(state: State, action: Action): State {
     case Actions.USER_DATA:
       return { ...state, userData: action.payload };
     case Actions.UPDATE_IS_AUTH:
-      console.log(action.payload);
-
       return { ...state, isAuth: action.payload };
+    case Actions.CHANNELS:
+      return { ...state, channels: action.payload };
     default:
       throw new Error();
   }

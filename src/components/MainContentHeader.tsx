@@ -1,9 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import styled from "styled-components";
-import { StoreContext, Actions } from "../store/store";
+import { StoreContext } from "../store/store";
 import { InvitePeople } from "./Sidebar/InvitePeople";
-import { useSubscription } from "@apollo/client";
-import { channelSelectedSubcription } from "../data/subscriptions";
 
 const Container = styled.div`
   position: fixed;
@@ -50,34 +48,13 @@ const Input = styled.input`
 `;
 
 export default function MainContentHeader() {
-  const { selectedChannel, dispatch } = useContext(StoreContext);
+  const { selectedChannel, channels, dispatch } = useContext(StoreContext);
   const [displayMember, setDisplayMember] = useState(false);
   const [displayInvitePeople, setDisplayInvitePeople] = useState(false);
-
-  const { data: dataChannel, loading } = useSubscription(
-    channelSelectedSubcription,
-    {
-      variables: { channelId: selectedChannel.id },
-    }
+  let channelCurrent = channels.find(
+    (channel) => channel.id === selectedChannel.id
   );
-
-  const selectChannelFn = (channel: {
-    id: string;
-    name: string;
-    members: number;
-    memberships: any[];
-  }) => {
-    dispatch({ type: Actions.SELECTED_CHANNEL, payload: channel });
-  };
-
-  // useEffect(() => {
-  //   const channel = {
-  //     id: selectedChannel.id,
-  //     name:
-  //   };
-  //   selectChannelFn(channel);
-  // }, dataChannel);
-  console.log(dataChannel, selectedChannel.id);
+  console.log(channelCurrent);
 
   return (
     <Container>
@@ -86,7 +63,7 @@ export default function MainContentHeader() {
           <InvitePeople exitCallback={() => setDisplayInvitePeople(false)} />
         ) : null}
         <div style={{ display: "flex" }}>
-          <h3 style={{ marginRight: "30px" }}>#{selectedChannel.name}</h3>
+          <h3 style={{ marginRight: "30px" }}>#{channelCurrent?.name}</h3>
           <div
             style={{ cursor: "pointer" }}
             onClick={() => setDisplayInvitePeople(true)}
@@ -102,14 +79,19 @@ export default function MainContentHeader() {
           />
           {!displayMember ? (
             <>
-              {selectedChannel ? selectedChannel.members : 0} member
-              {selectedChannel && selectedChannel.members > 1 && "s"}
+              {channelCurrent
+                ? channelCurrent.Memberships_aggregate.aggregate.count
+                : 0}{" "}
+              member
+              {channelCurrent &&
+                channelCurrent.Memberships_aggregate.aggregate.count > 1 &&
+                "s"}
             </>
           ) : (
             <>
-              {selectedChannel?.memberships?.map((usr) => (
+              {channelCurrent?.Memberships?.map((usr: any) => (
                 <div
-                  key={usr.id}
+                  key={usr.User.id}
                   style={{ display: "inline", marginRight: "10px" }}
                 >
                   <span>

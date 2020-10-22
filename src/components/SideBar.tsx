@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import styled from "styled-components";
 import Channels, { Channel } from "./Channels";
 import { DirectMessages } from "./DirectMessage";
@@ -82,7 +82,7 @@ interface Membership {
 
 export default function SideBar() {
   // const [channels, setChannels] = useState<Channel[]>([]);
-  const { userData, dispatch } = useContext(StoreContext);
+  const { userData, channels, dispatch } = useContext(StoreContext);
   const { logout } = useAuth0();
 
   const updateUserData = (userData: UserData) => {
@@ -93,9 +93,17 @@ export default function SideBar() {
     dispatch({ type: Actions.UPDATE_IS_AUTH, payload: _isAuth });
   };
 
+  const updateDataChannels = (_channels: any[]) => {
+    dispatch({ type: Actions.CHANNELS, payload: _channels });
+  };
+
   const { loading, error, data } = useSubscription(membershipSubcription, {
     variables: { userId: userData && userData.sub ? userData.sub : "user1" },
   });
+
+  useEffect(() => {
+    updateDataChannels(data ? data.Channel : []);
+  }, [data]);
 
   const logOutApp = () => {
     localStorage.clear();
@@ -141,8 +149,8 @@ export default function SideBar() {
         <div>
           <Channels
             channels={
-              data
-                ? (data.Channel as Channel[]).filter(
+              channels
+                ? (channels as any[]).filter(
                     (chanel) => !chanel.Memberships[0].direct
                   )
                 : []
@@ -152,8 +160,8 @@ export default function SideBar() {
           <DirectMessages
             loading={loading}
             channels={
-              data
-                ? (data.Channel as Channel[]).reduce((acc, value) => {
+              channels
+                ? (channels as any[]).reduce((acc, value) => {
                     if (value.Memberships[0].direct) {
                       return [...acc, value];
                     }
