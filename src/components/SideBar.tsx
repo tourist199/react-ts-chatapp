@@ -115,7 +115,6 @@ export default function SideBar() {
 
   const logOutApp = () => {
     localStorage.clear();
-    console.log(localStorage);
 
     logout({ returnTo: window.location.origin });
     updateIsAuth(false);

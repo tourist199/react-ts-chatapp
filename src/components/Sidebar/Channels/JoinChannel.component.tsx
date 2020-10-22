@@ -62,9 +62,7 @@ export function JoinChannel(props: Props) {
     refectchRef.current = refetch;
   }, [refetch]);
 
-  React.useEffect(() => {
-    console.log(dataAllChannels);
-  });
+  React.useEffect(() => {});
 
   const filterChannels = (e: React.ChangeEvent<HTMLInputElement>) => {
     e.persist();

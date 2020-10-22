@@ -54,7 +54,6 @@ export default function MainContentHeader() {
   let channelCurrent = channels.find(
     (channel) => channel.id === selectedChannel.id
   );
-  console.log(channelCurrent);
 
   return (
     <Container>

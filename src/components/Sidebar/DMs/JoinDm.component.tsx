@@ -81,8 +81,6 @@ export function JoinDmComponent(props: Props) {
     }
   );
 
-  console.log(selectedUsers);
-
   const onChangeInputValue = (e: React.ChangeEvent<HTMLInputElement>) => {
     e.persist();
     fetchData(e);

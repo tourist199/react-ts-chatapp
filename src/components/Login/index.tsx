@@ -56,8 +56,6 @@ export default function Login() {
     dispatch({ type: Actions.UPDATE_IS_AUTH, payload: _isAuth });
   };
   React.useEffect(() => {
-    console.log(isAuth, userAuth0, isAuthenticated);
-
     if (userAuth0 && isAuthenticated) {
       updateIsAuth(true);
       updateUserData(userAuth0);
