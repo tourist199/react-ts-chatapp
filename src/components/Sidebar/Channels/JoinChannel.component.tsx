@@ -83,7 +83,7 @@ export function JoinChannel(props: Props) {
         })
         .then((resp: any) => {
           const channelAffiliation =
-            resp.data.insert_Membership.returning[0].Channel;
+            resp.data.insert_Memberships.returning[0].Channel;
           dispatch({
             type: Actions.SELECTED_CHANNEL,
             payload: channelAffiliation,
